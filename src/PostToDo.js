@@ -7,7 +7,6 @@ export default function PostToDo() {
   const [incompletedTask, setInCompletedTask] = useState([]);
   const taskNameRef = useRef();
   const categoryRef = useRef();
-  const [selectedCategory, setSelectedCategory] = useState('Choose a category');
 
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || { incompletedTask: [], completedTask: [] };
@@ -25,6 +24,43 @@ export default function PostToDo() {
     updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask });
   };
 
+  const handleCompletedTask = (id) => {
+    const updatedTask = incompletedTask.find(task => task.task_id === id);
+    updatedTask.completed = true;
+
+    const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
+    const updatedCompletedTask = [...completedTask, updatedTask];
+
+    setInCompletedTask(updatedIncompletedTask);
+    setCompletedTask(updatedCompletedTask);
+
+    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
+  };
+
+  const handleTaskCompleteStatus = (id) => {
+    const updatedTask = incompletedTask.find(task => task.task_id === id);
+    updatedTask.completed = false;
+
+    const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
+    const updatedCompletedTask = [...completedTask, updatedTask];
+
+    setInCompletedTask(updatedIncompletedTask);
+    setCompletedTask(updatedCompletedTask);
+
+    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
+  };
+
+  const handleDeleteTask = (id) => {
+    // Delete task from both incompletedTask and completedTask
+    const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
+    const updatedCompletedTask = completedTask.filter(task => task.task_id !== id);
+
+    setInCompletedTask(updatedIncompletedTask);
+    setCompletedTask(updatedCompletedTask);
+
+    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
+  };
+
   const handleSubmitForm = (e) => {
     e.preventDefault();
     const task_name = taskNameRef.current.value;
@@ -40,19 +76,6 @@ export default function PostToDo() {
     postTask(newTask);
   };
 
-  const handleTaskCompleteStatus = (id) => {
-    const updatedTask = incompletedTask.find(task => task.task_id === id);
-    updatedTask.completed = true;
-
-    const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
-    const updatedCompletedTask = [...completedTask, updatedTask];
-
-    setInCompletedTask(updatedIncompletedTask);
-    setCompletedTask(updatedCompletedTask);
-
-    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
-  };
-
   return (
     <>
       <Form onSubmit={handleSubmitForm} taskNameRef={taskNameRef} categoryRef={categoryRef} />
@@ -60,13 +83,14 @@ export default function PostToDo() {
       <p></p>
 
       <ListTask
+        updateList={() => {}}
         fetchTask={() => {}}
         handleTaskCompleteStatus={handleTaskCompleteStatus}
+        checked={false}
         completedTask={completedTask}
         incompletedTask={incompletedTask}
-        handleCompletedTask={() => {}}
-        handleDeleteTask={() => {}}
-        selectedCategory={selectedCategory}
+        handleCompletedTask={handleCompletedTask}
+        handleDeleteTask={handleDeleteTask}
       />
     </>
   );
