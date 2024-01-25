@@ -21,37 +21,50 @@ export default function PostToDo() {
   };
 
   const postTask = (newTask) => {
+    const existingTask = incompletedTask.find(task => task.task_name === newTask.task_name && task.category === newTask.category);
+    if (existingTask) {
+      const shouldAdd = window.confirm('This item is already listed. Would you like to add it again?');
+      if (!shouldAdd) return;
+    }
+  
     const updatedIncompletedTask = [...incompletedTask, newTask];
     setInCompletedTask(updatedIncompletedTask);
     updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask });
   };
 
   const handleCompletedTask = (id) => {
-    const updatedTask = incompletedTask.find(task => task.task_id === id);
-    updatedTask.completed = true;
-
-    const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
-    const updatedCompletedTask = [...completedTask, updatedTask];
-
-    setInCompletedTask(updatedIncompletedTask);
-    setCompletedTask(updatedCompletedTask);
-
-    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
+    const purchasedTask = completedTask.find(task => task.task_id === id);
+    if (purchasedTask){
+      purchasedTask.completed = false;
+      const updatedCompletedTask = completedTask.filter(task => task.task_id !== id);
+      const updatedIncompletedTask = [...incompletedTask, purchasedTask];
+      setInCompletedTask(updatedIncompletedTask);
+      setCompletedTask(updatedCompletedTask);
+      updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
+    }
+    
   };
 
   const handleTaskCompleteStatus = (id) => {
-    const updatedTask = incompletedTask.find(task => task.task_id === id);
-    updatedTask.completed = false;
-
-    const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
-    const updatedCompletedTask = [...completedTask, updatedTask];
-
-    setInCompletedTask(updatedIncompletedTask);
-    setCompletedTask(updatedCompletedTask);
-
-    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
+    // Find the task with the given id in the incompletedTask state
+    const taskToUpdate = incompletedTask.find(task => task.task_id === id);
+  
+    if (taskToUpdate) {
+      // Update the completed property of the task
+      taskToUpdate.completed = true;
+  
+      // Remove the task from incompletedTask and add it to completedTask
+      const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
+      const updatedCompletedTask = [...completedTask, taskToUpdate];
+  
+      setInCompletedTask(updatedIncompletedTask);
+      setCompletedTask(updatedCompletedTask);
+  
+      // Update local storage
+      updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
+    }
   };
-
+  
   const handleDeleteTask = (id) => {
     // Delete task from both incompletedTask and completedTask
     const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
@@ -75,7 +88,7 @@ export default function PostToDo() {
       flash: true, // Add flash property for new tasks
     };
     taskNameRef.current.value = '';
-    categoryRef.current.value = 'Choose a category';
+    categoryRef.current.value = '';
     postTask(newTask);
 
     // Save to local storage

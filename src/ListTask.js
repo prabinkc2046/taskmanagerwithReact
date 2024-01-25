@@ -29,6 +29,10 @@ export default function ListTask({
     // You can modify the behavior here, like moving to a 'Purchased' category
   };
 
+  const handleIncompleteTaskClick = (id) => {
+    handleTaskCompleteStatus(id);
+  };
+
   return (
     <div className="container mt-5">
       <div className="row">
@@ -43,9 +47,9 @@ export default function ListTask({
                     <div className="d-flex justify-content-between align-items-center">
                       <button
                         className="btn btn-light"
-                        onClick={() => handleTaskCompleteStatus(task.task_id)}
+                        onClick={() => handleIncompleteTaskClick(task.task_id)}
                       >
-                        {task.task_name}
+                        {task.task_name} 
                       </button>
                     </div>
                   </div>
