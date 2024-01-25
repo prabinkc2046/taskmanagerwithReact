@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import './styles.css';
@@ -53,7 +53,7 @@ export default function ListTask({
             </div>
           </div>
         ))}
-        
+
         {/* Purchased Section */}
         <div className="col-md-6">
           <h6>Purchased</h6>

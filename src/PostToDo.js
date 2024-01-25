@@ -5,6 +5,8 @@ import ListTask from './ListTask';
 export default function PostToDo() {
   const [completedTask, setCompletedTask] = useState([]);
   const [incompletedTask, setInCompletedTask] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [history, setHistory] = useState([]);
   const taskNameRef = useRef();
   const categoryRef = useRef();
 
@@ -70,15 +72,79 @@ export default function PostToDo() {
       task_name: task_name,
       completed: false,
       category: category,
+      flash: true, // Add flash property for new tasks
     };
     taskNameRef.current.value = '';
     categoryRef.current.value = 'Choose a category';
     postTask(newTask);
+
+    // Save to local storage
+    saveToHistory(newTask);
+
+    // Clear the suggestions list if user does not select from the suggestions
+    setSuggestions([]);
   };
+
+  const saveToHistory = (task) => {
+    // Retrieve existing history from local storage
+    const existingHistory = JSON.parse(localStorage.getItem('taskHistory')) || [];
+  
+    // Check if the task already exists in history
+    const isTaskAlreadyExists = existingHistory.some(existingTask => existingTask.task_name === task.task_name);
+  
+    if (!isTaskAlreadyExists) {
+      // Update history with the new task
+      const updatedHistory = [task, ...existingHistory];
+      setHistory(updatedHistory);
+      // Save the updated history to local storage
+      localStorage.setItem('taskHistory', JSON.stringify(updatedHistory));
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    const filteredSuggestions = history.filter(
+      (task) => task.task_name.toLowerCase().startsWith(inputValue.toLowerCase())
+    );
+    setSuggestions(filteredSuggestions);
+  };
+
+  const handleSuggestionClick = (task) => {
+    taskNameRef.current.value = task.task_name;
+    categoryRef.current.value = task.category;
+  
+    // Clear the suggestions list
+    setSuggestions([]);
+  };
+
+  useEffect(() => {
+    // Load history from local storage on component mount
+    const storedHistory = JSON.parse(localStorage.getItem('taskHistory')) || [];
+    // setSuggestions(storedHistory);
+    setHistory(storedHistory);
+  }, []);
+
+  // Clear flash property after a certain time (e.g., 3 seconds)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const updatedIncompletedTask = incompletedTask.map(task => ({ ...task, flash: false }));
+      setInCompletedTask(updatedIncompletedTask);
+      updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask });
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [incompletedTask]);
 
   return (
     <>
-      <Form onSubmit={handleSubmitForm} taskNameRef={taskNameRef} categoryRef={categoryRef} />
+      <Form 
+        handleSubmitForm={handleSubmitForm} 
+        taskNameRef={taskNameRef} 
+        categoryRef={categoryRef}
+        handleSuggestionClick={handleSuggestionClick}
+        handleInputChange={handleInputChange}
+        suggestions={suggestions}
+      />
 
       <p></p>
 

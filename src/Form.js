@@ -1,10 +1,10 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
-export default function Form({ onSubmit, taskNameRef, categoryRef }) {
+export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handleSuggestionClick, handleInputChange, suggestions }) {
   return (
     <div className="container mt-4">
-      <form onSubmit={onSubmit} className="row g-3">
+      <form onSubmit={handleSubmitForm} className="row g-3">
         <div className="col-12">
           <div className="input-group">
             <input
@@ -13,9 +13,10 @@ export default function Form({ onSubmit, taskNameRef, categoryRef }) {
               className="form-control"
               placeholder="Type your shopping item"
               required
+              onChange={handleInputChange}
             />
-            <select ref={categoryRef} className="form-select form-select-sm" aria-label="Major Grocery Category">
-              <option value="Choose a category" disabled>Choose a category</option>
+            <select ref={categoryRef} className="form-select form-select-sm" aria-label="Major Grocery Category" defaultValue="">
+              <option value="" disabled>Choose a category</option>
               <option value="Produce">Produce</option>
               <option value="Dairy">Dairy</option>
               <option value="Meat">Meat</option>
@@ -26,9 +27,23 @@ export default function Form({ onSubmit, taskNameRef, categoryRef }) {
               <option value="Pantry">Pantry</option>
               <option value="Household">Household</option>
               <option value="Personal Care">Personal Care</option>
+              <option value="Cleaning Supplies">Cleaning Supplies</option>
+              <option value="Health & Beauty">Health & Beauty</option>
+              <option value="Baby Care">Baby Care</option>
+              <option value="Pet Supplies">Pet Supplies</option>
+              <option value="Office & School">Office & School</option>
+              <option value="Electronics">Electronics</option>
               {/* Add more categories as needed */}
             </select>
             <button type="submit" className="btn btn-secondary">Add</button>
+          </div>
+          <div>
+            {/* Display suggestions based on user input */}
+            {suggestions.map((task) => (
+              <div key={task.task_id} onClick={() => handleSuggestionClick(task)}>
+                {task.task_name} ({task.category})
+              </div>
+            ))}
           </div>
         </div>
       </form>
