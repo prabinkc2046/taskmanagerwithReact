@@ -46,12 +46,13 @@ export default function ListTask({
                 onClick={() => toggleAccordion(category)}
                 aria-expanded={activeAccordion === category}
                 aria-controls={`collapse-${index}`}
+                style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem' }} // Adjust left padding
               >
-                <span className="d-inline-block">{category}</span>
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-danger">
                   {incompletedTask.filter(task => task.category === category).length}
                   <span className="visually-hidden">unread messages</span>
                 </span>
+                <span className="d-inline-block">{category}</span>
               </button>
             </h2>
             <div
