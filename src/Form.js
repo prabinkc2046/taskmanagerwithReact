@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
+import Suggestions from './Suggestions';
 
 export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handleSuggestionClick, handleInputChange, suggestions }) {
   return (
@@ -37,14 +38,10 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
             </select>
             <button type="submit" className="btn btn-secondary">Add</button>
           </div>
-          <div>
-            {/* Display suggestions based on user input */}
-            {suggestions.map((task) => (
-              <div key={task.task_id} onClick={() => handleSuggestionClick(task)}>
-                {task.task_name} ({task.category})
-              </div>
-            ))}
-          </div>
+          <Suggestions 
+          suggestions={suggestions}
+          handleSuggestionClick={handleSuggestionClick}
+          />
         </div>
       </form>
     </div>

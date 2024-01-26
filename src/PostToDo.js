@@ -6,6 +6,7 @@ export default function PostToDo() {
   const [completedTask, setCompletedTask] = useState([]);
   const [incompletedTask, setInCompletedTask] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const [history, setHistory] = useState([]);
   const taskNameRef = useRef();
   const categoryRef = useRef();
@@ -125,7 +126,7 @@ export default function PostToDo() {
   const handleSuggestionClick = (task) => {
     taskNameRef.current.value = task.task_name;
     categoryRef.current.value = task.category;
-  
+
     // Clear the suggestions list
     setSuggestions([]);
   };
@@ -147,6 +148,8 @@ export default function PostToDo() {
 
     return () => clearTimeout(timer);
   }, [incompletedTask]);
+  
+  
 
   return (
     <>
@@ -157,8 +160,8 @@ export default function PostToDo() {
         handleSuggestionClick={handleSuggestionClick}
         handleInputChange={handleInputChange}
         suggestions={suggestions}
+        selectedSuggestion={selectedSuggestion}
       />
-
       <p></p>
 
       <ListTask
