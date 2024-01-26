@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Import the times icon
 import './styles.css';
 
 export default function ListTask({
@@ -73,6 +73,13 @@ export default function ListTask({
                       >
                         <div className="d-flex justify-content-between align-items-center">
                           <span>{task.task_name}</span>
+                          <button
+                            className="btn btn-danger"
+                            style={{ backgroundColor: 'yellow' }} // Yellow background color
+                            onClick={() => handleDeleteTask(task.task_id)}
+                          >
+                            <FontAwesomeIcon icon={faTimes} style={{ color: 'black' }} /> {/* Black cross icon */}
+                          </button>
                         </div>
                       </button>
                     ))}
@@ -96,14 +103,6 @@ export default function ListTask({
                   >
                     {task.task_name}
                   </button>
-                  <div>
-                    <button
-                      className="btn btn-danger me-2"
-                      onClick={() => handleDeleteTask(task.task_id)}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                  </div>
                 </div>
               </div>
             ))}
