@@ -24,7 +24,7 @@ export default function Suggestions({ suggestions, handleSuggestionClick }) {
         <li
           key={task.task_id}
           onClick={() => suggestionSelection(task)}
-          className={`list-group-item ${selectedSuggestion === task ? 'active' : ''}`}
+          className={`list-group-item ${selectedSuggestion === task ? 'active' : 'list-group-item-secondary'}`}
         >
           {task.task_name} ({task.category})
         </li>
