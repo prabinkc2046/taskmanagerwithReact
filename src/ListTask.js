@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
 import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Import the times icon
 import './styles.css';
 
@@ -32,6 +33,14 @@ export default function ListTask({
 
   const toggleAccordion = (category) => {
     setActiveAccordion(prevCategory => (prevCategory === category ? null : category));
+  };
+
+  const handleCompletedTaskDelete = (id) => {
+    handleDeleteTask(id);
+  };
+
+  const handleMoveToPurchased = (id) => {
+    handleCompletedTask(id);
   };
 
   return (
@@ -76,7 +85,7 @@ export default function ListTask({
                           <button
                             className="btn btn-danger"
                             style={{ backgroundColor: 'yellow' }} // Yellow background color
-                            onClick={() => handleDeleteTask(task.task_id)}
+                            onClick={() => handleMoveToPurchased(task.task_id)} // Move to purchased section
                           >
                             <FontAwesomeIcon icon={faTimes} style={{ color: 'black' }} /> {/* Black cross icon */}
                           </button>
@@ -103,6 +112,13 @@ export default function ListTask({
                   >
                     {task.task_name}
                   </button>
+                  <button
+                    className="btn btn-danger"
+                    style={{ backgroundColor: 'white' }} // White background color
+                    onClick={() => handleCompletedTaskDelete(task.task_id)} // Handle delete for completed task
+                  >
+                    <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} /> {/* Black trash icon */}
+                  </button>
                 </div>
               </div>
             ))}
@@ -110,5 +126,6 @@ export default function ListTask({
         </div>
       </div>
     </div>
+
   );
 }
