@@ -8,6 +8,8 @@ export default function PostToDo() {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const [history, setHistory] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
   const taskNameRef = useRef();
   const categoryRef = useRef();
 
@@ -24,8 +26,9 @@ export default function PostToDo() {
   const postTask = (newTask) => {
     const existingTask = incompletedTask.find(task => task.task_name === newTask.task_name && task.category === newTask.category);
     if (existingTask) {
-      const shouldAdd = window.confirm('This item is already listed. Would you like to add it again?');
-      if (!shouldAdd) return;
+      setShowModal(true);
+      setSelectedTask(newTask);
+      return; // Do not proceed further until user confirms
     }
   
     const updatedIncompletedTask = [...incompletedTask, newTask];
@@ -43,7 +46,6 @@ export default function PostToDo() {
       setCompletedTask(updatedCompletedTask);
       updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
     }
-    
   };
 
   const handleTaskCompleteStatus = (id) => {
@@ -131,6 +133,24 @@ export default function PostToDo() {
     setSuggestions([]);
   };
 
+  const handleModalConfirmation = (confirmed) => {
+    if (confirmed) {
+      // If user confirms, proceed to add the task
+      const existingTask = incompletedTask.find(task => task.task_name === selectedTask.task_name && task.category === selectedTask.category);
+      if (existingTask) {
+        postTask(selectedTask);
+        const updatedIncompletedTask = [...incompletedTask, selectedTask];
+        setInCompletedTask(updatedIncompletedTask);
+        updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask });
+      }
+    }
+  
+    // Reset modal state
+    setShowModal(false);
+    setSelectedTask(null);
+  };
+  
+
   useEffect(() => {
     // Load history from local storage on component mount
     const storedHistory = JSON.parse(localStorage.getItem('taskHistory')) || [];
@@ -148,8 +168,6 @@ export default function PostToDo() {
 
     return () => clearTimeout(timer);
   }, [incompletedTask]);
-  
-  
 
   return (
     <>
@@ -162,6 +180,26 @@ export default function PostToDo() {
         suggestions={suggestions}
         selectedSuggestion={selectedSuggestion}
       />
+
+      {/* Bootstrap Modal */}
+      <div className={`modal fade ${showModal ? 'show' : ''}`} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: showModal ? 'block' : 'none' }}>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Duplicate Item</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => handleModalConfirmation(false)}></button>
+            </div>
+            <div className="modal-body">
+              This item is already listed. Would you like to add it again?
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={() => handleModalConfirmation(false)}>No</button>
+              <button type="button" className="btn btn-primary" onClick={() => handleModalConfirmation(true)}>Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
       <p></p>
 
       <ListTask
