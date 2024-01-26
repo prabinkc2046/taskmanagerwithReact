@@ -99,31 +99,56 @@ export default function ListTask({
         ))}
 
         {/* Purchased Section */}
-        <div className="col-md-6">
-          <h6>Purchased</h6>
-          <div className="list-group">
-            {completedTask.map(task => (
-              <div key={task.task_id} className="list-group-item">
-                <div className="d-flex justify-content-between align-items-center">
-                  <button
-                    className="btn btn-light"
-                    style={{ textDecoration: 'line-through' }}
-                    onClick={() => handlePurchasedTask(task.task_id)}
-                  >
-                    {task.task_name}
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    style={{ backgroundColor: 'white' }} // White background color
-                    onClick={() => handleCompletedTaskDelete(task.task_id)} // Handle delete for completed task
-                  >
-                    <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} /> {/* Black trash icon */}
-                  </button>
-                </div>
+        <div className="accordion-item">
+          <h2 className="accordion-header">
+            <button
+              className={`accordion-button collapsed ${activeAccordion === 'Purchased' ? 'active' : ''}`}
+              type="button"
+              onClick={() => toggleAccordion('Purchased')}
+              aria-expanded={activeAccordion === 'Purchased'}
+              aria-controls={`collapse-purchased`}
+              style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem' }} // Adjust left padding
+            >
+              <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-danger">
+                {completedTask.length}
+                <span className="visually-hidden">unread messages</span>
+              </span>
+              <span className="d-inline-block">Purchased</span>
+            </button>
+          </h2>
+          <div
+            id={`collapse-purchased`}
+            className={`accordion-collapse collapse ${activeAccordion === 'Purchased' ? 'show' : ''}`}
+            aria-labelledby={`heading-purchased`}
+            data-bs-parent="#accordionFlushExample"
+          >
+            <div className="accordion-body">
+              <div className="list-group">
+                {completedTask.map(task => (
+                  <div key={task.task_id} className="list-group-item">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <button
+                        className="btn btn-light"
+                        style={{ textDecoration: 'line-through' }}
+                        onClick={() => handlePurchasedTask(task.task_id)}
+                      >
+                        {task.task_name}
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        style={{ backgroundColor: 'white' }} // White background color
+                        onClick={() => handleCompletedTaskDelete(task.task_id)} // Handle delete for completed task
+                      >
+                        <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} /> {/* Black trash icon */}
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
+
       </div>
     </div>
 
