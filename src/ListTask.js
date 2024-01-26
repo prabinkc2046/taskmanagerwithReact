@@ -47,7 +47,11 @@ export default function ListTask({
                 aria-expanded={activeAccordion === category}
                 aria-controls={`collapse-${index}`}
               >
-                {category}
+                <span className="d-inline-block">{category}</span>
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {incompletedTask.filter(task => task.category === category).length}
+                  <span className="visually-hidden">unread messages</span>
+                </span>
               </button>
             </h2>
             <div
