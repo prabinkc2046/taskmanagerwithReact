@@ -169,6 +169,11 @@ export default function PostToDo() {
     return () => clearTimeout(timer);
   }, [incompletedTask]);
 
+  //remove the suggestions if add button is not clicked
+  const removeSuggestion = () => {
+    setSuggestions([]);
+  };
+
   return (
     <>
       <Form 
@@ -211,6 +216,7 @@ export default function PostToDo() {
         incompletedTask={incompletedTask}
         handleCompletedTask={handleCompletedTask}
         handleDeleteTask={handleDeleteTask}
+        removeSuggestion={removeSuggestion}
       />
     </>
   );
