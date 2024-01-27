@@ -16,7 +16,7 @@ export default function PostToDo() {
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || { incompletedTask: [], completedTask: [] };
     setInCompletedTask(storedTasks.incompletedTask);
-    setCompletedTask(storedTasks.completedTask);
+    setCompletedTask(storedTasks.completedTask.reverse());
   }, []);
 
   const updateLocalStorage = (tasks) => {
@@ -32,8 +32,8 @@ export default function PostToDo() {
     }
   
     const updatedIncompletedTask = [...incompletedTask, newTask];
-    setInCompletedTask(updatedIncompletedTask);
-    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask });
+    setInCompletedTask(updatedIncompletedTask.reverse());
+    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask});
   };
 
   const handleCompletedTask = (id) => {
@@ -42,8 +42,8 @@ export default function PostToDo() {
       purchasedTask.completed = false;
       const updatedCompletedTask = completedTask.filter(task => task.task_id !== id);
       const updatedIncompletedTask = [...incompletedTask, purchasedTask];
-      setInCompletedTask(updatedIncompletedTask);
-      setCompletedTask(updatedCompletedTask);
+      setInCompletedTask(updatedIncompletedTask.reverse());
+      setCompletedTask(updatedCompletedTask.reverse());
       updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
     }
   };
@@ -60,8 +60,8 @@ export default function PostToDo() {
       const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
       const updatedCompletedTask = [...completedTask, taskToUpdate];
   
-      setInCompletedTask(updatedIncompletedTask);
-      setCompletedTask(updatedCompletedTask);
+      setInCompletedTask(updatedIncompletedTask.reverse());
+      setCompletedTask(updatedCompletedTask.reverse());
   
       // Update local storage
       updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
@@ -140,7 +140,7 @@ export default function PostToDo() {
       if (existingTask) {
         postTask(selectedTask);
         const updatedIncompletedTask = [...incompletedTask, selectedTask];
-        setInCompletedTask(updatedIncompletedTask);
+        setInCompletedTask(updatedIncompletedTask.reverse());
         updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask });
       }
     }
@@ -203,10 +203,10 @@ export default function PostToDo() {
       <p></p>
 
       <ListTask
-        updateList={() => {}}
+        // updateList={() => {}}
         fetchTask={() => {}}
         handleTaskCompleteStatus={handleTaskCompleteStatus}
-        checked={false}
+        // checked={false}
         completedTask={completedTask}
         incompletedTask={incompletedTask}
         handleCompletedTask={handleCompletedTask}

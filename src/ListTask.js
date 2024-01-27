@@ -5,10 +5,10 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Import the times
 import './styles.css';
 
 export default function ListTask({
-  updateList,
+  // updateList,
   fetchTask,
   handleTaskCompleteStatus,
-  checked,
+  // checked,
   completedTask,
   incompletedTask,
   handleCompletedTask,
@@ -19,7 +19,7 @@ export default function ListTask({
 
   useEffect(() => {
     fetchTask();
-  }, [updateList, checked]);
+  }, []);
 
   const handlePurchasedTask = (id) => {
     const purchasedTask = completedTask.find(task => task.task_id === id);
