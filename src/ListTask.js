@@ -13,21 +13,36 @@ export default function ListTask({
   handleDeleteTask,
   removeSuggestion
 }) {
-  const categories = Array.from(new Set(incompletedTask.map(task => task.category))).sort();
-
+  const [sortedCategory, setSortedCategory] = useState([]);
   const [activeAccordion, setActiveAccordion] = useState(null);
+  const categories = Array.from(new Set(sortedCategory.map(task => task.category)));
 
   useEffect(() => {
-    fetchTask();
-  }, []);
+    processTasks(incompletedTask);
+  }, [incompletedTask]);
 
+  function processTasks(incompletedTasks) {
+    // Step 1: Filter the items to get the highest task_id for each category
+    const categoryTasks = {};
+    incompletedTasks.forEach(task => {
+      if (!categoryTasks[task.category] || task.task_id > categoryTasks[task.category].task_id) {
+        categoryTasks[task.category] = { category: task.category, task_id: task.task_id };
+      }
+    });
+  
+    // Step 2: Sort the categoryTasks array based on decreasing order of task_id
+    const sortedCategoryTasks = Object.values(categoryTasks).sort((a, b) => b.task_id - a.task_id);
+    // return sortedCategoryTasks;
+    setSortedCategory(sortedCategoryTasks);
+  };
+  
+  
   const handlePurchasedTask = (id) => {
     handleCompletedTask(id);
   };
 
   const handleIncompleteTaskClick = (id) => {
     handleTaskCompleteStatus(id);
-    console.log("order of category", categories)
   };
 
   const toggleAccordion = (category) => {
@@ -96,6 +111,7 @@ export default function ListTask({
           </div>
         ))}
 
+        {/* Code for Purchased category */}
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
