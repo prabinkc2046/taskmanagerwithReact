@@ -32,7 +32,7 @@ export default function PostToDo() {
     }
   
     const updatedIncompletedTask = [...incompletedTask, newTask];
-    setInCompletedTask(updatedIncompletedTask);
+    setInCompletedTask(updatedIncompletedTask.reverse());
     updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask});
   };
 
