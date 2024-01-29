@@ -13,6 +13,16 @@ export default function PostToDo() {
   const taskNameRef = useRef();
   const categoryRef = useRef();
 
+  //persist the state of active accordion 
+  const [activeAccordion, setActiveAccordion] = useState(() => {
+    const storedActiveAccordion = localStorage.getItem('activeAccordion');
+    return storedActiveAccordion ? JSON.parse(storedActiveAccordion) : null; 
+  });
+
+  useEffect(() => {
+    localStorage.setItem('activeAccordion',JSON.stringify(activeAccordion));
+  },[activeAccordion]);
+
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || { incompletedTask: [], completedTask: [] };
     setInCompletedTask(storedTasks.incompletedTask);
@@ -94,6 +104,12 @@ export default function PostToDo() {
     categoryRef.current.value = '';
     postTask(newTask);
 
+    // when a item is added, this will open the Accordion and if the Accordion is already open for
+    // the given category, it will stay open
+    if (activeAccordion !== category) {
+      setActiveAccordion(prevCategory => (prevCategory === category ? null : category));
+    }
+
     // Save to local storage
     saveToHistory(newTask);
 
@@ -174,6 +190,13 @@ export default function PostToDo() {
     setSuggestions([]);
   };
 
+  const toggleAccordion = (category) => {
+    setActiveAccordion(prevCategory => (prevCategory === category ? null : category));
+    console.log("value of active accordion", activeAccordion);
+    // remove the suggestion in case user clicks on the add task and do not add task
+    removeSuggestion();
+  };
+
   return (
     <>
       <Form 
@@ -217,6 +240,8 @@ export default function PostToDo() {
         handleCompletedTask={handleCompletedTask}
         handleDeleteTask={handleDeleteTask}
         removeSuggestion={removeSuggestion}
+        activeAccordion={activeAccordion}
+        toggleAccordion={toggleAccordion}
       />
     </>
   );

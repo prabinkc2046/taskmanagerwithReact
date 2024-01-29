@@ -11,10 +11,12 @@ export default function ListTask({
   incompletedTask,
   handleCompletedTask,
   handleDeleteTask,
-  removeSuggestion
+  removeSuggestion,
+  toggleAccordion,
+  activeAccordion,
 }) {
   const [sortedCategory, setSortedCategory] = useState([]);
-  const [activeAccordion, setActiveAccordion] = useState(null);
+  // const [activeAccordion, setActiveAccordion] = useState(null);
   const categories = Array.from(new Set(sortedCategory.map(task => task.category)));
 
   useEffect(() => {
@@ -45,12 +47,12 @@ export default function ListTask({
     handleTaskCompleteStatus(id);
   };
 
-  const toggleAccordion = (category) => {
-    setActiveAccordion(prevCategory => (prevCategory === category ? null : category));
+  // const toggleAccordion = (category) => {
+  //   setActiveAccordion(prevCategory => (prevCategory === category ? null : category));
     
-    // remove the suggestion in case user clicks on the add task and do not add task
-    removeSuggestion();
-  };
+  //   // remove the suggestion in case user clicks on the add task and do not add task
+  //   removeSuggestion();
+  // };
 
   const handleMoveToPurchased = (id) => {
     handleCompletedTask(id);
