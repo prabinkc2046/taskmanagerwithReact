@@ -66,6 +66,17 @@ export default function ListTask({
 
   return (
     <div style={{ fontFamily: 'Arial, sans-serif' }}className="container mt-5">
+    {incompletedTask.length > 0 && (
+      <button type="button" class="btn btn-success position-relative">
+      Shopping list
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+      {incompletedTask.length}
+        <span class="visually-hidden">unread messages</span>
+      </span>
+    </button>
+    )}
+
+    <p></p>
       <div className="accordion" id="accordionFlushExample">
         {categories.map((category, index) => (
           <div className="accordion-item" key={index}>
@@ -117,21 +128,22 @@ export default function ListTask({
 
         {/* This section will appear when there are no items in the list */}
         {incompletedTask.length === 0 && (
-          <div style={{fontSize:'small'}} className="card text-center ">
+          <div style={{fontSize:'small', fontWeight:'bold', color:'black'}} className="card text-center ">
           <div  className="card-body">
             {incompletedTask.length === 0 ? (
-              <p className='card-text'>Looks like shopping list is empty. Add items to begin.</p>
+              <p className='card-text'>Hooray! Your shopping list is clear! See you next time!</p>
             ) : (
               <h5 className="card-title">Special title treatment</h5>
             )}
           </div>
           <div className="card-footer text-body-secondary">
-            {daysSinceLastEmptyTask && `Last shopping ${daysSinceLastEmptyTask} days ago`}
+            {daysSinceLastEmptyTask && `Last shopping ${daysSinceLastEmptyTask} day${daysSinceLastEmptyTask !== 1 ? 's' : '' } ago`}
           </div>
         </div>
         )}
-
+         <p></p>
         {/* Code for Purchased category */}
+        <div className="accordion">
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
@@ -142,11 +154,15 @@ export default function ListTask({
               aria-controls={`collapse-purchased`}
               style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontSize:'small'}}
             >
-              <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-danger">
-                {completedTask.length}
-                <span className="visually-hidden">unread messages</span>
+              <span className="d-inline-block">
+                <button type="button" class="btn btn-secondary position-relative">
+                Checked Off items
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+              {completedTask.length}
+                <span class="visually-hidden">unread messages</span>
+             </span>
+            </button>
               </span>
-              <span style={{fontStyle:'italic'}}className="d-inline-block">Checked Off</span>
             </button>
           </h2>
           <div
@@ -179,6 +195,7 @@ export default function ListTask({
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
