@@ -12,28 +12,24 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
               ref={taskNameRef}
               type="text"
               className="form-control"
-              placeholder="Type your shopping item"
+              placeholder="Enter grocery item..."
               required
               onChange={handleInputChange}
             />
             <select ref={categoryRef} className="form-select form-select-sm" aria-label="Major Grocery Category" defaultValue="">
-              <option value="" disabled>Choose a category</option>
-              <option value="Produce">Produce</option>
-              <option value="Dairy">Dairy</option>
-              <option value="Meat">Meat</option>
-              <option value="Bakery">Bakery</option>
-              <option value="Frozen">Frozen</option>
-              <option value="Snacks">Snacks</option>
-              <option value="Beverages">Beverages</option>
-              <option value="Pantry">Pantry</option>
-              <option value="Household">Household</option>
-              <option value="Personal Care">Personal Care</option>
-              <option value="Cleaning Supplies">Cleaning Supplies</option>
-              <option value="Health & Beauty">Health & Beauty</option>
-              <option value="Baby Care">Baby Care</option>
-              <option value="Pet Supplies">Pet Supplies</option>
-              <option value="Office & School">Office & School</option>
-              <option value="Electronics">Electronics</option>
+            <option value="" disabled>Select aisle category</option>
+            <option value="Produce">Fresh Produce</option>
+            <option value="Dairy">Dairy Products</option>
+            <option value="Meat">Meat and Poultry</option>
+            <option value="Bakery">Bakery Items</option>
+            <option value="Frozen">Frozen Foods</option>
+            <option value="Snacks">Snacks and Confectionery</option>
+            <option value="Beverages">Beverages</option>
+            <option value="Pantry">Pantry Staples</option>
+            <option value="Household">Cleaning and Household Products</option>
+            <option value="Personal Care">Personal Care</option>
+            <option value="Miscellaneous">Miscellaneous</option>
+
               {/* Add more categories as needed */}
             </select>
             <button type="submit" className="btn btn-secondary">Add</button>

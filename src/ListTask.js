@@ -74,7 +74,7 @@ export default function ListTask({
                 onClick={() => toggleAccordion(category)}
                 aria-expanded={activeAccordion === category}
                 aria-controls={`collapse-${index}`}
-                style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem' }}
+                style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontWeight: 'bold' }}
               >
                 <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-danger">
                   {incompletedTask.filter(task => task.category === category).length}
@@ -99,10 +99,10 @@ export default function ListTask({
                         className={`list-group-item ${task.flash ? 'flash' : ''}`}
                         onClick={() => handleIncompleteTaskClick(task.task_id)}
                       >
-                        <div className="d-flex justify-content-between align-items-center">
-                          <span>{task.task_name}</span>
-                          <button className="btn btn-danger" style={{ backgroundColor: 'yellow' }}>
-                            <FontAwesomeIcon icon={faTimes} style={{ color: 'black' }} />
+                        <div className="d-flex justify-content-between align-items-center btn btn-light">
+                          <span style={{color:'black', fontStyle: 'italic'}}>{task.task_name}</span>
+                          <button className="btn btn-danger" style={{ backgroundColor: 'green', borderColor: 'white'}}>
+                            <FontAwesomeIcon icon={faTimes} style={{ color: 'white' }} />
                           </button>
                         </div>
                       </button>
@@ -122,7 +122,7 @@ export default function ListTask({
               onClick={() => toggleAccordion('Purchased')}
               aria-expanded={activeAccordion === 'Purchased'}
               aria-controls={`collapse-purchased`}
-              style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem' }}
+              style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontWeight:'bold'}}
             >
               <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-danger">
                 {completedTask.length}
@@ -144,14 +144,13 @@ export default function ListTask({
                     <div className="d-flex justify-content-between align-items-center">
                       <button
                         className="btn btn-light"
-                        style={{ textDecoration: 'line-through' }}
+                        style={{ textDecoration: 'line-through', textDecorationColor: '#B2BEB5', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
                         onClick={() => handlePurchasedTask(task.task_id)}
                       >
                         {task.task_name}
                       </button>
                       <button
-                        className="btn btn-danger"
-                        style={{ backgroundColor: 'white' }}
+                        className="btn btn-light"
                         onClick={() => handleCompletedTaskDelete(task.task_id)}
                       >
                         <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
