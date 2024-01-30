@@ -16,7 +16,8 @@ export default function ListTask({
   activeAccordion,
 }) {
   const [sortedCategory, setSortedCategory] = useState([]);
-  // const [activeAccordion, setActiveAccordion] = useState(null);
+  const [lastEmptyTaskTime, setLastEmptyTaskTime] = useState(null);
+  const [daysSinceLastEmptyTask, setDaysSinceLastEmptyTask] = useState(null);
   const categories = Array.from(new Set(sortedCategory.map(task => task.category)));
 
   useEffect(() => {
@@ -24,21 +25,29 @@ export default function ListTask({
   }, [incompletedTask]);
 
   function processTasks(incompletedTasks) {
-    // Step 1: Filter the items to get the highest task_id for each category
     const categoryTasks = {};
     incompletedTasks.forEach(task => {
       if (!categoryTasks[task.category] || task.task_id > categoryTasks[task.category].task_id) {
         categoryTasks[task.category] = { category: task.category, task_id: task.task_id };
       }
     });
-  
-    // Step 2: Sort the categoryTasks array based on decreasing order of task_id
     const sortedCategoryTasks = Object.values(categoryTasks).sort((a, b) => b.task_id - a.task_id);
-    // return sortedCategoryTasks;
     setSortedCategory(sortedCategoryTasks);
-  };
-  
-  
+
+    if (incompletedTasks.length === 0) {
+      setLastEmptyTaskTime(new Date());
+    }
+  }
+
+  useEffect(() => {
+    if (lastEmptyTaskTime) {
+      const currentDate = new Date();
+      const differenceInTime = Math.abs(currentDate - lastEmptyTaskTime);
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+      setDaysSinceLastEmptyTask(differenceInDays);
+    }
+  }, [lastEmptyTaskTime]);
+
   const handlePurchasedTask = (id) => {
     handleCompletedTask(id);
   };
@@ -46,13 +55,6 @@ export default function ListTask({
   const handleIncompleteTaskClick = (id) => {
     handleTaskCompleteStatus(id);
   };
-
-  // const toggleAccordion = (category) => {
-  //   setActiveAccordion(prevCategory => (prevCategory === category ? null : category));
-    
-  //   // remove the suggestion in case user clicks on the add task and do not add task
-  //   removeSuggestion();
-  // };
 
   const handleMoveToPurchased = (id) => {
     handleCompletedTask(id);
@@ -63,7 +65,7 @@ export default function ListTask({
   };
 
   return (
-    <div className="container mt-5">
+    <div style={{ fontFamily: 'Arial, sans-serif' }}className="container mt-5">
       <div className="accordion" id="accordionFlushExample">
         {categories.map((category, index) => (
           <div className="accordion-item" key={index}>
@@ -112,6 +114,22 @@ export default function ListTask({
             </div>
           </div>
         ))}
+
+        {/* This section will appear when there are no items in the list */}
+        {incompletedTask.length === 0 && (
+          <div style={{fontSize:'small'}} className="card text-center ">
+          <div  className="card-body">
+            {incompletedTask.length === 0 ? (
+              <p className='card-text'>Looks like shopping list is empty. Add items to begin.</p>
+            ) : (
+              <h5 className="card-title">Special title treatment</h5>
+            )}
+          </div>
+          <div className="card-footer text-body-secondary">
+            {daysSinceLastEmptyTask && `Last shopping ${daysSinceLastEmptyTask} days ago`}
+          </div>
+        </div>
+        )}
 
         {/* Code for Purchased category */}
         <div className="accordion-item">
