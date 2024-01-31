@@ -19,17 +19,17 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
             />
             <select style={{fontSize:'small'}} ref={categoryRef} className="form-select form-select-sm" aria-label="Major Grocery Category" defaultValue="">
             <option value="" disabled>Select aisle category</option>
-            <option value="Fresh Produce">Fresh Produce</option>
-            <option value="Dairy Products">Dairy Products</option>
-            <option value="Meat and Poultry">Meat and Poultry</option>
-            <option value="Bakery Items">Bakery Items</option>
-            <option value="Frozen Foods">Frozen Foods</option>
-            <option value="Snacks and Confectionery">Snacks and Confectionery</option>
-            <option value="Beverages">Beverages</option>
-            <option value="Pantry Staples">Pantry Staples</option>
-            <option value="Cleaning and Household Products">Cleaning and Household Products</option>
-            <option value="Personal Care">Personal Care</option>
-            <option value="Miscellaneous">Miscellaneous</option>
+            <option value="Fresh Produce">🥦 Fresh Produce</option>
+            <option value="Dairy Products">🥛 Dairy Products</option>
+            <option value="Meat and Poultry">🍗 Meat and Poultry</option>
+            <option value="Bakery Items">🍞 Bakery Items</option>
+            <option value="Frozen Foods">❄️ Frozen Foods</option>
+            <option value="Snacks and Confectionery">🍿 Snacks and Confectionery</option>
+            <option value="Beverages">🍺 Beverages</option>
+            <option value="Pantry Staples">🍚 Pantry Staples</option>
+            <option value="Cleaning and Household Products">🧹 Cleaning and Household Products</option>
+            <option value="Personal Care">🧼 Personal Care</option>
+            <option value="Miscellaneous">🎉 Miscellaneous</option>
 
               {/* Add more categories as needed */}
             </select>

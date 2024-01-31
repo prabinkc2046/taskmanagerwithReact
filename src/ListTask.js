@@ -68,7 +68,7 @@ export default function ListTask({
     <div style={{ fontFamily: 'Arial, sans-serif' }}className="container mt-5">
     {incompletedTask.length > 0 && (
       <button type="button" class="btn btn-success position-relative">
-      Shopping list
+      Your shopping list for today
       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
       {incompletedTask.length}
         <span class="visually-hidden">unread messages</span>
@@ -89,7 +89,7 @@ export default function ListTask({
                 aria-controls={`collapse-${index}`}
                 style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontStyle:'italic', fontSize:'small'}}
               >
-                <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-danger">
+                <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-info">
                   {incompletedTask.filter(task => task.category === category).length}
                   <span className="visually-hidden">unread messages</span>
                 </span>
@@ -157,7 +157,7 @@ export default function ListTask({
               <span className="d-inline-block">
                 <button type="button" class="btn btn-secondary position-relative">
                 Checked Off items
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
               {completedTask.length}
                 <span class="visually-hidden">unread messages</span>
              </span>
