@@ -43,4 +43,4 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
       </form>
     </div>
   );
-}
+};

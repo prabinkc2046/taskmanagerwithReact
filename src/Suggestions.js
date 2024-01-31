@@ -19,16 +19,18 @@ export default function Suggestions({ suggestions, handleSuggestionClick }) {
   };
 
   return (
-    <ul className="list-group">
-      {suggestions.map((task) => (
+    <ul class="list-group">
+  {suggestions.map((task) => (
         <li
           key={task.task_id}
           onClick={() => suggestionSelection(task)}
-          className={`list-group-item ${selectedSuggestion === task ? 'active' : 'list-group-item-secondary'}`}
+          className={`list-group-item d-flex justify-content-between align-items-center list-group-item-action list-group-item-success ${selectedSuggestion === task ? 'active' : 'list-group-item-secondary'}`}
         >
-          {task.task_name} ({task.category})
+          {task.task_name} 
+          <span class="badge bg-info rectangle-pill">{task.category}</span>
         </li>
       ))}
-    </ul>
+</ul>
   );
 }
+

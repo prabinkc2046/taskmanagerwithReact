@@ -67,7 +67,7 @@ export default function ListTask({
   return (
     <div style={{ fontFamily: 'Arial, sans-serif' }}className="container mt-5">
     {incompletedTask.length > 0 && (
-      <button type="button" class="btn btn-success position-relative">
+      <button type="button" class="btn btn-secondary position-relative">
       Your shopping list for today
       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
       {incompletedTask.length}
