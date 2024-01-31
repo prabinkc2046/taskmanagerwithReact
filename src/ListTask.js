@@ -65,18 +65,18 @@ export default function ListTask({
   };
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif' }}className="container mt-5">
-    {incompletedTask.length > 0 && (
-      <button type="button" class="btn btn-secondary position-relative">
-      Your shopping list for today
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
-      {incompletedTask.length}
-        <span class="visually-hidden">unread messages</span>
-      </span>
-    </button>
-    )}
+    <div style={{ fontFamily: 'Arial, sans-serif' }} className="container mt-5">
+      {incompletedTask.length > 0 && (
+        <button type="button" class="btn btn-secondary position-relative">
+          Your shopping list for today
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+            {incompletedTask.length}
+            <span class="visually-hidden">unread messages</span>
+          </span>
+        </button>
+      )}
 
-    <p></p>
+      <p></p>
       <div className="accordion" id="accordionFlushExample">
         {categories.map((category, index) => (
           <div className="accordion-item" key={index}>
@@ -87,7 +87,7 @@ export default function ListTask({
                 onClick={() => toggleAccordion(category)}
                 aria-expanded={activeAccordion === category}
                 aria-controls={`collapse-${index}`}
-                style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontStyle:'italic', fontSize:'small'}}
+                style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontStyle: 'italic', fontSize: 'small' }}
               >
                 <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-info">
                   {incompletedTask.filter(task => task.category === category).length}
@@ -113,8 +113,8 @@ export default function ListTask({
                         onClick={() => handleIncompleteTaskClick(task.task_id)}
                       >
                         <div className="d-flex justify-content-between align-items-center btn btn-light">
-                          <span style={{color:'black', fontStyle: 'italic', fontSize:'small'}}>{task.task_name}</span>
-                          <button className="btn btn-danger" style={{ backgroundColor: 'green', borderColor: 'white'}}>
+                          <span style={{ color: 'black', fontStyle: 'italic', fontSize: 'small' }}>{task.task_name}</span>
+                          <button className="btn btn-danger" style={{ backgroundColor: 'green', borderColor: 'white' }}>
                             <FontAwesomeIcon icon={faTimes} style={{ color: 'white' }} />
                           </button>
                         </div>
@@ -128,75 +128,77 @@ export default function ListTask({
 
         {/* This section will appear when there are no items in the list */}
         {incompletedTask.length === 0 && (
-          <div style={{fontSize:'small', fontWeight:'bold', color:'black'}} className="card text-center ">
-          <div  className="card-body">
-            {incompletedTask.length === 0 ? (
-              <p className='card-text'>Hooray! Your shopping list is clear! See you next time!</p>
-            ) : (
-              <h5 className="card-title">Special title treatment</h5>
-            )}
+          <div style={{ fontSize: 'small', fontWeight: 'bold', color: 'black' }} className="card text-center ">
+            <div className="card-body">
+              {incompletedTask.length === 0 ? (
+                <p className='card-text'>Hooray! Your shopping list is clear! See you next time!</p>
+              ) : (
+                <h5 className="card-title">Special title treatment</h5>
+              )}
+            </div>
+            <div className="card-footer text-body-secondary">
+              {daysSinceLastEmptyTask && `Last shopping ${daysSinceLastEmptyTask} day${daysSinceLastEmptyTask !== 1 ? 's' : ''} ago`}
+            </div>
           </div>
-          <div className="card-footer text-body-secondary">
-            {daysSinceLastEmptyTask && `Last shopping ${daysSinceLastEmptyTask} day${daysSinceLastEmptyTask !== 1 ? 's' : '' } ago`}
-          </div>
-        </div>
         )}
-         <p></p>
+        <p></p>
         {/* Code for Purchased category */}
-        <div className="accordion">
-        <div className="accordion-item">
-          <h2 className="accordion-header">
-            <button
-              className={`accordion-button ${activeAccordion === 'Purchased' ? '' : 'collapsed'}`}
-              type="button"
-              onClick={() => toggleAccordion('Purchased')}
-              aria-expanded={activeAccordion === 'Purchased'}
-              aria-controls={`collapse-purchased`}
-              style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontSize:'small'}}
-            >
-              <span className="d-inline-block">
-                <button type="button" class="btn btn-secondary position-relative">
-                Checked Off items
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
-              {completedTask.length}
-                <span class="visually-hidden">unread messages</span>
-             </span>
-            </button>
-              </span>
-            </button>
-          </h2>
-          <div
-            id={`collapse-purchased`}
-            className={`accordion-collapse collapse ${activeAccordion === 'Purchased' ? 'show' : ''}`}
-            aria-labelledby={`heading-purchased`}
-            data-bs-parent="#accordionFlushExample"
-          >
-            <div className="accordion-body">
-              <div className="list-group">
-                {completedTask.map(task => (
-                  <div key={task.task_id} className="list-group-item">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <button
-                        className="btn btn-light"
-                        style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
-                        onClick={() => handlePurchasedTask(task.task_id)}
-                      >
-                        {task.task_name}
-                      </button>
-                      <button
-                        className="btn btn-light"
-                        onClick={() => handleCompletedTaskDelete(task.task_id)}
-                      >
-                        <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
-                      </button>
-                    </div>
+        {completedTask.length > 0 && (
+          <div className="accordion">
+            <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button
+                  className={`accordion-button ${activeAccordion === 'Purchased' ? '' : 'collapsed'}`}
+                  type="button"
+                  onClick={() => toggleAccordion('Purchased')}
+                  aria-expanded={activeAccordion === 'Purchased'}
+                  aria-controls={`collapse-purchased`}
+                  style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontSize: 'small' }}
+                >
+                  <span className="d-inline-block">
+                    <button type="button" class="btn btn-secondary position-relative">
+                      Checked Off items
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+                        {completedTask.length}
+                        <span class="visually-hidden">unread messages</span>
+                      </span>
+                    </button>
+                  </span>
+                </button>
+              </h2>
+              <div
+                id={`collapse-purchased`}
+                className={`accordion-collapse collapse ${activeAccordion === 'Purchased' ? 'show' : ''}`}
+                aria-labelledby={`heading-purchased`}
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div className="accordion-body">
+                  <div className="list-group">
+                    {completedTask.map(task => (
+                      <div key={task.task_id} className="list-group-item">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <button
+                            className="btn btn-light"
+                            style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
+                            onClick={() => handlePurchasedTask(task.task_id)}
+                          >
+                            {task.task_name}
+                          </button>
+                          <button
+                            className="btn btn-light"
+                            onClick={() => handleCompletedTaskDelete(task.task_id)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        </div>
+        )}
       </div>
     </div>
   );
