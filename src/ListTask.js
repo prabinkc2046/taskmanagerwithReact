@@ -131,7 +131,7 @@ export default function ListTask({
           <div style={{ fontSize: 'small', fontWeight: 'bold', color: 'black' }} className="card text-center ">
             <div className="card-body">
               {incompletedTask.length === 0 ? (
-                <p className='card-text'>Hooray!! Your shopping list is clear! See you next time!</p>
+                <p className='card-text'>Hooray!!! Your shopping list is clear! See you next time!</p>
               ) : (
                 <h5 className="card-title">Special title treatment</h5>
               )}
