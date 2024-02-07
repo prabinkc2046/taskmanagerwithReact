@@ -5,13 +5,17 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
-
+    
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: sync the code
         uses: actions/checkout@v4
-      - name: check content of the current directory
-        run: ls 
+      - name: Install dependencies
+        run: npm install
+      - name: build react
+        uses: npm run build
+      - name: see the content of build file
+        run: ls ./build
     
