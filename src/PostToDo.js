@@ -6,6 +6,7 @@ export default function PostToDo() {
   const [completedTask, setCompletedTask] = useState([]);
   const [incompletedTask, setInCompletedTask] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  // eslint-disable-next-line
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const [history, setHistory] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -183,6 +184,7 @@ export default function PostToDo() {
     }, 3000);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line
   }, [incompletedTask]);
 
   //remove the suggestions if add button is not clicked

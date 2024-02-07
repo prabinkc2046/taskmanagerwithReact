@@ -55,7 +55,7 @@ export default function ListTask({
   const handleIncompleteTaskClick = (id) => {
     handleTaskCompleteStatus(id);
   };
-
+// eslint-disable-next-line
   const handleMoveToPurchased = (id) => {
     handleCompletedTask(id);
   };
