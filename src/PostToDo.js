@@ -208,6 +208,7 @@ export default function PostToDo() {
         handleInputChange={handleInputChange}
         suggestions={suggestions}
         selectedSuggestion={selectedSuggestion}
+        removeSuggestion={removeSuggestion}
       />
 
       {/* Bootstrap Modal */}

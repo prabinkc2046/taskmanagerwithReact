@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Suggestions from './Suggestions';
 
-export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handleSuggestionClick, handleInputChange, suggestions }) {
+export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handleSuggestionClick, handleInputChange, suggestions, removeSuggestion }) {
   return (
     <div className="container mt-4">
       <form onSubmit={handleSubmitForm} className="row g-3">
@@ -38,6 +38,7 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
           <Suggestions 
           suggestions={suggestions}
           handleSuggestionClick={handleSuggestionClick}
+          removeSuggestion={removeSuggestion}
           />
         </div>
       </form>
