@@ -68,11 +68,11 @@ export default function ListTask({
     <div style={{ fontFamily: 'Arial, sans-serif' }} className="container mt-5">
       {incompletedTask.length > 0 && (
         <button type="button" class="btn btn-secondary position-relative">
-          Your shopping list for today
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+          Ready to shop? You've got <span class="badge text-bg-dark">{incompletedTask.length}</span> on your list!
+          {/* <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
             {incompletedTask.length}
             <span class="visually-hidden">unread messages</span>
-          </span>
+          </span> */}
         </button>
       )}
 
@@ -142,63 +142,46 @@ export default function ListTask({
           </div>
         )}
         <p></p>
-        {/* Code for Purchased category */}
         {completedTask.length > 0 && (
-          <div className="accordion">
-            <div className="accordion-item">
-              <h2 className="accordion-header">
+  <div >
+    <button className="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+    Tap to see what's checked off! <span class="badge text-bg-dark">{completedTask.length}</span> 
+    </button>
+    
+    <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+      <div className="offcanvas-header">
+        <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Crossed out items <span class="badge bg-secondary">{completedTask.length}</span></h5>
+
+        <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div className="offcanvas-body">
+        <ul className="list-group">
+          {completedTask.map(task => (
+            <li key={task.task_id} className="list-group-item">
+              <div className="d-flex justify-content-between align-items-center">
                 <button
-                  className={`accordion-button ${activeAccordion === 'Purchased' ? '' : 'collapsed'}`}
-                  type="button"
-                  onClick={() => toggleAccordion('Purchased')}
-                  aria-expanded={activeAccordion === 'Purchased'}
-                  aria-controls={`collapse-purchased`}
-                  style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontSize: 'small' }}
+                  className="btn btn-light"
+                  style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
+                  onClick={() => handlePurchasedTask(task.task_id)}
                 >
-                  <span className="d-inline-block">
-                    <button type="button" class="btn btn-secondary position-relative">
-                      Checked Off items
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
-                        {completedTask.length}
-                        <span class="visually-hidden">unread messages</span>
-                      </span>
-                    </button>
-                  </span>
+                  {task.task_name}
                 </button>
-              </h2>
-              <div
-                id={`collapse-purchased`}
-                className={`accordion-collapse collapse ${activeAccordion === 'Purchased' ? 'show' : ''}`}
-                aria-labelledby={`heading-purchased`}
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div className="accordion-body">
-                  <div className="list-group">
-                    {completedTask.map(task => (
-                      <div key={task.task_id} className="list-group-item">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <button
-                            className="btn btn-light"
-                            style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
-                            onClick={() => handlePurchasedTask(task.task_id)}
-                          >
-                            {task.task_name}
-                          </button>
-                          <button
-                            className="btn btn-light"
-                            onClick={() => handleCompletedTaskDelete(task.task_id)}
-                          >
-                            <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <button
+                  className="btn btn-light"
+                  onClick={() => handleCompletedTaskDelete(task.task_id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
+                </button>
               </div>
-            </div>
-          </div>
-        )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+)}
+
+
       </div>
     </div>
   );
