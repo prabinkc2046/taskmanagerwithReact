@@ -65,15 +65,14 @@ export default function ListTask({
   };
 
   return (
+    <>
     <div style={{ fontFamily: 'Arial, sans-serif' }} className="container mt-5">
       {incompletedTask.length > 0 && (
-        <button type="button" class="btn btn-secondary position-relative">
-          Ready to shop? You've got <span class="badge text-bg-dark">{incompletedTask.length}</span> on your list!
-          {/* <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
-            {incompletedTask.length}
-            <span class="visually-hidden">unread messages</span>
-          </span> */}
-        </button>
+        
+          <div class="h4 pb-2 mb-4 text-secondary border-bottom border-secondary">
+  Ready to shop? Total items <span class="badge text-bg-secondary">{incompletedTask.length}</span>
+</div>
+        
       )}
 
       <p></p>
@@ -144,10 +143,12 @@ export default function ListTask({
         <p></p>
         {completedTask.length > 0 && (
   <div >
-    <button className="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-    Tap to see what's checked off! <span class="badge text-bg-dark">{completedTask.length}</span> 
+    <div class="p-0 mb-2 rounded-start rounded-end d-flex justify-content-center align-items-center">
+    <button style={{fontSize: 'small'}} className="btn  p-1 border-secondary text-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+    Tap to see what's checked off! <span class="badge text-bg-secondary">{completedTask.length}</span> 
     </button>
-    
+    </div>
+
     <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
       <div className="offcanvas-header">
         <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Crossed out items <span class="badge bg-secondary">{completedTask.length}</span></h5>
@@ -184,5 +185,6 @@ export default function ListTask({
 
       </div>
     </div>
+    </>
   );
 }
