@@ -88,7 +88,7 @@ export default function ListTask({
                 aria-controls={`collapse-${index}`}
                 style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontStyle: 'italic', fontSize: 'large' }}
               >
-                <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-info">
+                <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-secondary">
                   {incompletedTask.filter(task => task.category === category).length}
                   <span className="visually-hidden">unread messages</span>
                 </span>
@@ -113,7 +113,7 @@ export default function ListTask({
                       >
                         <div className="d-flex justify-content-between align-items-center btn btn-light">
                           <span style={{ color: 'black', fontStyle: 'italic', fontSize: 'medium' }}>{task.task_name}</span>
-                          <button className="btn btn-danger" style={{ backgroundColor: 'green', borderColor: 'white' }}>
+                          <button className="btn btn-danger" style={{ backgroundColor: '#6c757d', borderColor: 'white' }}>
                             <FontAwesomeIcon icon={faTimes} style={{ color: 'white' }} />
                           </button>
                         </div>
