@@ -86,7 +86,7 @@ export default function ListTask({
                 onClick={() => toggleAccordion(category)}
                 aria-expanded={activeAccordion === category}
                 aria-controls={`collapse-${index}`}
-                style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontStyle: 'italic', fontSize: 'small' }}
+                style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontStyle: 'italic', fontSize: 'large' }}
               >
                 <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-info">
                   {incompletedTask.filter(task => task.category === category).length}
@@ -112,7 +112,7 @@ export default function ListTask({
                         onClick={() => handleIncompleteTaskClick(task.task_id)}
                       >
                         <div className="d-flex justify-content-between align-items-center btn btn-light">
-                          <span style={{ color: 'black', fontStyle: 'italic', fontSize: 'small' }}>{task.task_name}</span>
+                          <span style={{ color: 'black', fontStyle: 'italic', fontSize: 'medium' }}>{task.task_name}</span>
                           <button className="btn btn-danger" style={{ backgroundColor: 'green', borderColor: 'white' }}>
                             <FontAwesomeIcon icon={faTimes} style={{ color: 'white' }} />
                           </button>
@@ -162,10 +162,10 @@ export default function ListTask({
               <div className="d-flex justify-content-between align-items-center">
                 <button
                   className="btn btn-light"
-                  style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
+                  style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black'}}
                   onClick={() => handlePurchasedTask(task.task_id)}
                 >
-                  {task.task_name}
+                  <span style={{fontSize: 'medium'}}>{task.task_name}</span>
                 </button>
                 <button
                   className="btn btn-light"
