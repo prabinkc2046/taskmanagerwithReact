@@ -93,12 +93,13 @@ export default function PostToDo() {
   const handleSubmitForm = (e) => {
     e.preventDefault();
     const task_name = taskNameRef.current.value;
-    const category = categoryRef.current.value;
+    let category = categoryRef.current.value;
+    category = category.trim() === "" ? "Uncategorised items" : category;
     const newTask = {
       task_id: new Date().getTime(),
       task_name: task_name,
       completed: false,
-      category: category,
+      category: category ,
       flash: true, // Add flash property for new tasks
     };
     taskNameRef.current.value = '';

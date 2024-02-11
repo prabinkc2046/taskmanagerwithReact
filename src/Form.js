@@ -9,16 +9,16 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
         <div className="col-12">
           <div  className="input-group">
             <input
-              style={{fontSize:'small'}}
+              style={{fontSize:'large'}}
               ref={taskNameRef}
               type="text"
               className="form-control"
-              placeholder="Enter grocery item..."
+              placeholder="Grocery item"
               required
               onChange={handleInputChange}
             />
-            <select style={{fontSize:'small'}} ref={categoryRef} className="form-select form-select-sm" aria-label="Major Grocery Category" defaultValue="">
-            <option value="" disabled>Select aisle category</option>
+            <select  style={{fontSize:'large'}} ref={categoryRef} className="form-select form-select-sm" aria-label="Major Grocery Category" defaultValue="">
+            <option value="" disabled>Select aisle</option>
             <option value="Fresh Produce">🥦 Fresh Produce</option>
             <option value="Dairy Products">🥛 Dairy Products</option>
             <option value="Meat and Poultry">🍗 Meat and Poultry</option>
@@ -33,7 +33,7 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
 
               {/* Add more categories as needed */}
             </select>
-            <button style={{fontSize:'small'}} type="submit" className="btn btn-secondary">Add Item</button>
+            <button style={{fontSize:'large'}}type="submit" className="btn btn-secondary">Add Item</button>
           </div>
           <Suggestions 
           suggestions={suggestions}

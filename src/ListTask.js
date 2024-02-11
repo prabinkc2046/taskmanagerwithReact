@@ -145,13 +145,13 @@ export default function ListTask({
   <div >
     <div class="p-0 mb-2 rounded-start rounded-end d-flex justify-content-center align-items-center">
     <button style={{fontSize: 'small'}} className="btn  p-1 border-secondary text-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-    Tap to see what's checked off! <span class="badge text-bg-secondary">{completedTask.length}</span> 
+    Tap to see purchased items <span class="badge text-bg-secondary">{completedTask.length}</span> 
     </button>
     </div>
 
     <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
       <div className="offcanvas-header">
-        <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Crossed out items <span class="badge bg-secondary">{completedTask.length}</span></h5>
+        <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Purchased items <span class="badge bg-secondary">{completedTask.length}</span></h5>
 
         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
