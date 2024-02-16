@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Form from './Form';
 import ListTask from './ListTask';
+import { format } from 'prettier';
 
 export default function PostToDo() {
   const [completedTask, setCompletedTask] = useState([]);
@@ -59,6 +60,11 @@ export default function PostToDo() {
     }
   };
 
+  const formatDate = (date) => {
+    const option = {weekday: 'short', month: 'short', day: '2-digit'}
+    return date.toLocaleDateString('en-US', option);
+  };
+
   const handleTaskCompleteStatus = (id) => {
     // Find the task with the given id in the incompletedTask state
     const taskToUpdate = incompletedTask.find(task => task.task_id === id);
@@ -66,7 +72,10 @@ export default function PostToDo() {
     if (taskToUpdate) {
       // Update the completed property of the task
       taskToUpdate.completed = true;
-  
+      const currentDate = new Date();
+      const formattedDate = formatDate(currentDate);
+      console.log(formattedDate);
+      taskToUpdate.purchasedDate = formattedDate;
       // Remove the task from incompletedTask and add it to completedTask
       const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
       const updatedCompletedTask = [...completedTask, taskToUpdate];
