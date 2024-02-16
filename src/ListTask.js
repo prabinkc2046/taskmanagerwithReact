@@ -152,7 +152,7 @@ export default function ListTask({
 
             <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
               <div className="offcanvas-header">
-                <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Purchased items <span class="badge bg-secondary">{completedTask.length}</span></h5>
+                <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Purchased history <span class="badge bg-secondary">{completedTask.length}</span></h5>
                 <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div className="offcanvas-body">
@@ -189,12 +189,20 @@ export default function ListTask({
                                 <li key={task.task_id} className="list-group-item">
                                   <div className="d-flex justify-content-between align-items-center">
                                     <button
-                                      className="btn btn-light"
-                                      style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
+                                      className="btn btn-secondary"
+                                      style={{ textDecoration: 'line-through', textDecorationColor: 'black', fontStyle: 'italic', textDecorationThickness: '2px', color: 'white' }}
                                       onClick={() => handlePurchasedTask(task.task_id)}
                                     >
                                       <span style={{ fontSize: 'medium' }}>{task.task_name}</span>
                                     </button>
+
+                                    <button
+                                      className="btn btn-light"
+                                      style={{ fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
+                                    >
+                                      <span style={{ fontSize: 'medium' }}>{task.category}</span>
+                                    </button>
+
                                     <button
                                       className="btn btn-light"
                                       onClick={() => handleCompletedTaskDelete(task.task_id)}

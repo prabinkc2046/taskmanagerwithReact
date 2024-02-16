@@ -27,7 +27,7 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
             <option value="Snacks and Confectionery">🍿 Snacks and Confectionery</option>
             <option value="Beverages">🍺 Beverages</option>
             <option value="Pantry Staples">🍚 Pantry Staples</option>
-            <option value="Cleaning and Household Products">🧹 Cleaning and Household Products</option>
+            <option value="Cleaning Household Products">🧹 Cleaning and Household Products</option>
             <option value="Personal Care">🧼 Personal Care</option>
             <option value="Miscellaneous">🎉 Miscellaneous</option>
 
