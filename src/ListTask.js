@@ -14,58 +14,13 @@ export default function ListTask({
   removeSuggestion,
   toggleAccordion,
   activeAccordion,
+  categories,
+  handleIncompleteTaskClick,
+  daysSinceLastEmptyTask,
+  purchasedDates,
+  handlePurchasedTask,
+  handleCompletedTaskDelete
 }) {
-  const [sortedCategory, setSortedCategory] = useState([]);
-  const [lastEmptyTaskTime, setLastEmptyTaskTime] = useState(null);
-  const [daysSinceLastEmptyTask, setDaysSinceLastEmptyTask] = useState(null);
-  const categories = Array.from(new Set(sortedCategory.map(task => task.category)));
-  const purchasedDates = Array.from(new Set(completedTask.map(task => task.purchasedDate)));
-
-  useEffect(() => {
-    processTasks(incompletedTask);
-  }, [incompletedTask]);
-
-  function processTasks(incompletedTasks) {
-    const categoryTasks = {};
-    incompletedTasks.forEach(task => {
-      if (!categoryTasks[task.category] || task.task_id > categoryTasks[task.category].task_id) {
-        categoryTasks[task.category] = { category: task.category, task_id: task.task_id };
-      }
-    });
-    const sortedCategoryTasks = Object.values(categoryTasks).sort((a, b) => b.task_id - a.task_id);
-    setSortedCategory(sortedCategoryTasks);
-
-    if (incompletedTasks.length === 0) {
-      setLastEmptyTaskTime(new Date());
-    }
-  }
-
-  useEffect(() => {
-    if (lastEmptyTaskTime) {
-      const currentDate = new Date();
-      const differenceInTime = Math.abs(currentDate - lastEmptyTaskTime);
-      const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
-      setDaysSinceLastEmptyTask(differenceInDays);
-    }
-  }, [lastEmptyTaskTime]);
-
-  const handlePurchasedTask = (id) => {
-    handleCompletedTask(id);
-  };
-
-  const handleIncompleteTaskClick = (id) => {
-    handleTaskCompleteStatus(id);
-    console.log("purchased dates", purchasedDates)
-  };
-  // eslint-disable-next-line
-  const handleMoveToPurchased = (id) => {
-    handleCompletedTask(id);
-  };
-
-  const handleCompletedTaskDelete = (id) => {
-    handleDeleteTask(id);
-  };
-
   return (
     <>
       <div style={{ fontFamily: 'Arial, sans-serif' }} className="container mt-5">
