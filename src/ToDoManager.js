@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Form from './Form';
 import ListTask from './ListTask';
 import ConfirmationModal from './ConfirmationModal';
+import axios from 'axios';
+const api='http://172.105.163.114:3005/api/';
 
 export default function ToDoManager() {
   const [completedTask, setCompletedTask] = useState([]);
@@ -123,9 +125,24 @@ export default function ToDoManager() {
     }
   };
 
+  const fetchCategory = async(inputValue) => {
+    try {
+      const response = await axios.get(`${api}${inputValue}`);
+      const responseData = response.data;
+      if (responseData && responseData.category){
+        const category = responseData.category.category;
+        // set the category automatically
+        console.log(category);
+        categoryRef.current.value = category;
+      }
+    } catch(error){
+      console.log("error", error.message);
+    }
+  }
   const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-    const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue.toLowerCase()));
+    const inputValue = e.target.value.toLowerCase();
+    fetchCategory(inputValue);
+    const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
     setSuggestions(filteredSuggestions);
   };
 
