@@ -144,20 +144,12 @@ export default function ListTask({
                                 <li key={task.task_id} className="list-group-item">
                                   <div className="d-flex justify-content-between align-items-center">
                                     <button
-                                      className="btn btn-secondary"
-                                      style={{ textDecoration: 'line-through', textDecorationColor: 'black', fontStyle: 'italic', textDecorationThickness: '2px', color: 'white' }}
+                                      className="btn btn-light"
+                                      style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
                                       onClick={() => handlePurchasedTask(task.task_id)}
                                     >
                                       <span style={{ fontSize: 'medium' }}>{task.task_name}</span>
                                     </button>
-
-                                    <button
-                                      className="btn btn-light"
-                                      style={{ fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
-                                    >
-                                      <span style={{ fontSize: 'medium' }}>{task.category}</span>
-                                    </button>
-
                                     <button
                                       className="btn btn-light"
                                       onClick={() => handleCompletedTaskDelete(task.task_id)}
