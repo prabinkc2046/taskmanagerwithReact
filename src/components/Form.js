@@ -1,23 +1,24 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Suggestions from './Suggestions';
+import '../styles/Form.css';
 
 export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handleSuggestionClick, handleInputChange, suggestions, removeSuggestion }) {
   return (
     <div className="container mt-4">
-      <form onSubmit={handleSubmitForm} className="row g-3">
+      <form onSubmit={handleSubmitForm} className="row g-3 ">
         <div className="col-12">
           <div  className="input-group">
             <input
-              style={{fontSize:'large'}}
               ref={taskNameRef}
               type="text"
               className="form-control"
+              style={{fontSize:'2vh'}}
               placeholder="Grocery item"
               required
               onChange={handleInputChange}
             />
-            <select style={{fontSize:'large'}} ref={categoryRef} className="form-select form-select-sm" aria-label="Major Grocery Category" defaultValue="">
+            <select  ref={categoryRef} className="form-select form-select-sm custom-select" aria-label="Major Grocery Category" defaultValue="">
             <option value="" disabled>Select aisle</option>
             <option value="Fresh Produce">🥦 Fresh Produce</option>
             <option value="Dairy Products">🥛 Dairy Products</option>
@@ -33,7 +34,7 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
 
               {/* Add more categories as needed */}
             </select>
-            <button style={{fontSize:'large'}}type="submit" className="btn btn-secondary">Add Item</button>
+            <button type="submit" className="btn btn-secondary" style={{padding:'7.5px', fontSize:'2vh'}}>Add Item</button>
           </div>
           <Suggestions 
           suggestions={suggestions}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import '../styles/styles.css';
+import '../styles/ListTask.css';
 
 export default function ListTask({
   fetchTask,
@@ -26,7 +26,7 @@ export default function ListTask({
       <div style={{ fontFamily: 'Arial, sans-serif' }} className="container mt-5">
         {incompletedTask.length > 0 && (
           <div class="h4 pb-2 mb-4 text-secondary border-bottom border-secondary">
-            Ready to shop? Total items <span class="badge text-bg-secondary">{incompletedTask.length}</span>
+            Ready to shop? Total items <span class="badge text-bg-secondary" style={{ paddingTop: '3px', paddingBottom: '3px', paddingLeft: '4px', paddingRight: '4px' }}>{incompletedTask.length}</span>
           </div>
         )}
 
@@ -34,20 +34,19 @@ export default function ListTask({
         <div className="accordion" id="accordionFlushExample">
           {categories.map((category, index) => (
             <div className="accordion-item" key={index}>
-              <h2 className="accordion-header">
+              <h2 className="accordion-header custom-header">
                 <button
-                  className={`accordion-button ${activeAccordion === category ? '' : 'collapsed'}`}
+                  className={`accordion-button  ${activeAccordion === category ? '' : 'collapsed'}`}
+                  style={{padding:'12px'}}
                   type="button"
                   onClick={() => toggleAccordion(category)}
                   aria-expanded={activeAccordion === category}
                   aria-controls={`collapse-${index}`}
-                  style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontStyle: 'italic', fontSize: 'large' }}
                 >
-                  <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-secondary">
+                  <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-secondary" style={{ paddingTop: '2px', paddingBottom: '2px', paddingLeft: '4px', paddingRight: '4px' }}>
                     {incompletedTask.filter(task => task.category === category).length}
-                    <span className="visually-hidden">unread messages</span>
                   </span>
-                  <span className="d-inline-block">{category}</span>
+                  <span className="d-inline-block" style={{paddingLeft:'7px', fontSize:'2vh'}}>{category}</span>
                 </button>
               </h2>
               <div
@@ -56,20 +55,21 @@ export default function ListTask({
                 aria-labelledby={`heading-${index}`}
                 data-bs-parent="#accordionFlushExample"
               >
-                <div className="accordion-body">
+                <div className="accordion-body" style={{padding:'10px'}}>
                   <div className="list-group">
                     {incompletedTask
                       .filter(task => task.category === category)
                       .map(task => (
                         <button
                           key={task.task_id}
-                          className={`list-group-item ${task.flash ? 'flash' : ''}`}
+                          className={`list-group-item  ${task.flash ? 'flash' : ''}`}
+                          style={{padding:'10px'}}
                           onClick={() => handleIncompleteTaskClick(task.task_id)}
                         >
-                          <div className="d-flex justify-content-between align-items-center btn btn-light">
-                            <span style={{ color: 'black', fontStyle: 'italic', fontSize: 'medium' }}>{task.task_name}</span>
-                            <button className="btn btn-danger" style={{ backgroundColor: '#6c757d', borderColor: 'white' }}>
-                              <FontAwesomeIcon icon={faTimes} style={{ color: 'white' }} />
+                          <div className="d-flex justify-content-between align-items-center btn btn-light" style={{padding: '0px'}}>
+                            <span className='custom-items' style={{paddingLeft:'10px'}}>{task.task_name}</span>
+                            <button className="btn btn-danger" style={{ backgroundColor: '#6c757d', borderColor: 'white'}}>
+                              <FontAwesomeIcon icon={faTimes} style={{ color: 'white'}} />
                             </button>
                           </div>
                         </button>
@@ -107,7 +107,7 @@ export default function ListTask({
 
             <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
               <div className="offcanvas-header">
-                <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Purchased history <span class="badge bg-secondary">{completedTask.length}</span></h5>
+                <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Purchased history <span class="badge bg-secondary" style={{paddingTop: '4px', paddingBottom: '2px', paddingLeft: '4px', paddingRight: '4px'}}>{completedTask.length}</span></h5>
                 <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div className="offcanvas-body">
@@ -121,13 +121,13 @@ export default function ListTask({
                           onClick={() => toggleAccordion(purchasedDate)}
                           aria-expanded={activeAccordion === purchasedDate}
                           aria-controls={`collapse-${index}`}
-                          style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingLeft: '1rem', fontStyle: 'italic', fontSize: 'large' }}
+                          style={{ position: 'relative', display: 'flex', alignItems: 'center', padding: '7px', fontStyle: 'italic', fontSize: 'large' }}
                         >
-                          <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-secondary">
+                          <span className="position-absolute top-50 start-0 translate-middle badge rounded-pill bg-secondary" style={{ paddingTop: '2px', paddingBottom: '2px', paddingLeft: '4px', paddingRight: '4px' }}>
                             {completedTask.filter(task => task.purchasedDate === purchasedDate).length}
                             <span className="visually-hidden">unread messages</span>
                           </span>
-                          <span className="d-inline-block">{purchasedDate}</span>
+                          <span className="d-inline-block" style={{fontSize:'2vh', paddingTop: '4px', paddingBottom: '2px', paddingLeft: '20px', paddingRight: '4px'}} >{purchasedDate}</span>
                         </button>
                       </h2>
                       <div

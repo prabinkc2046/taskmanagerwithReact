@@ -1,0 +1,14 @@
+.custom-accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-size: 1vw;
+}
+
+.custom-items {
+    font-style: normal;
+    font-size: smaller;
+}
+
+
