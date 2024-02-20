@@ -21,7 +21,7 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
             <option value="" disabled>Select aisle</option>
             <option value="fresh produce">🥦 Fresh Produce</option>
             <option value="dairy products">🥛 Dairy Products</option>
-            <option value="meat and poulty">🍗 Meat and Poultry</option>
+            <option value="meat and poultry">🍗 Meat and Poultry</option>
             <option value="bakery items">🍞 Bakery Items</option>
             <option value="frozen foods">❄️ Frozen Foods</option>
             <option value="snacks and confectionery">🍿 Snacks and Confectionery</option>

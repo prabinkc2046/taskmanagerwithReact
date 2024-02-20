@@ -125,25 +125,49 @@ export default function ToDoManager() {
     }
   };
 
-  const fetchCategory = async(inputValue) => {
+  // const fetchCategory = async(inputValue) => {
+  //   const inputValue = e.target.value.toLowerCase();
+  //   try {
+  //     const response = await axios.get(`${api}${inputValue}`);
+  //     const responseData = response.data;
+  //     if (responseData && responseData.category){
+  //       const category = responseData.category.category;
+  //       // set the category automatically
+  //       // when category has value, set the category otherwise do not set
+  //       categoryRef.current.value = category;
+  //       console.log("category return ", category);
+  //     } else{
+  //       const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
+  //       console.log("Filtered suggestion ", filteredSuggestions);
+  //       setSuggestions(filteredSuggestions);
+  //     }
+  //   } catch(error){
+  //     console.log("error", error.message);
+  //   }
+  // }
+  const handleInputChange = async(e) => {
+    const inputValue = e.target.value.toLowerCase();
     try {
       const response = await axios.get(`${api}${inputValue}`);
       const responseData = response.data;
       if (responseData && responseData.category){
         const category = responseData.category.category;
         // set the category automatically
-        console.log(category);
+        // when category has value, set the category otherwise do not set
         categoryRef.current.value = category;
+        console.log("category return ", category);
+      } else{
+        const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
+        console.log("Filtered suggestion ", filteredSuggestions);
+        setSuggestions(filteredSuggestions);
       }
     } catch(error){
       console.log("error", error.message);
     }
-  }
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value.toLowerCase();
-    fetchCategory(inputValue);
-    const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
-    setSuggestions(filteredSuggestions);
+    // const inputValue = e.target.value.toLowerCase();
+    // fetchCategory(inputValue);
+    // const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
+    // setSuggestions(filteredSuggestions);
   };
 
   const handleSuggestionClick = (task) => {
