@@ -20,7 +20,7 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
             />
             <select  ref={categoryRef} className="form-select form-select-sm custom-select" aria-label="Major Grocery Category" defaultValue="">
             <option value="" disabled>Select aisle</option>
-            <option value="fresh produce">🥦 Fresh Produce</option>
+            <option value="Fresh Produce">🥦 Fresh Produce</option>
             <option value="Dairy Products">🥛 Dairy Products</option>
             <option value="Meat And Poultry">🍗 Meat and Poultry</option>
             <option value="Bakery Items">🍞 Bakery Items</option>

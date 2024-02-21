@@ -132,7 +132,6 @@ export default function ToDoManager() {
   const handleInputChange = async(e) => {
     const inputValue = e.target.value.toLowerCase();  
     const response = await axios.get(api);
-    const responseData = response.data;
     const items = response.data.items;
     const matchedItems = items.filter(item => item.item.startsWith(inputValue));
     const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
@@ -145,13 +144,17 @@ export default function ToDoManager() {
         setOurSuggestions(matchedItems);
         setDbHasData(true);
         setHistoryHasData(false);
-    } else {
+    } else if(inputValue === ""){
+        setSuggestions([]);
+        setOurSuggestions([]);
+        categoryRef.current.value = "";
+    }
+    else {
       console.log("something went wrong")
       }
   }
 
   const handleSuggestionClick = (objectItem) => {
-    console.log("Selected item is", objectItem);
     if (objectItem.item && objectItem.item !== ""){
       taskNameRef.current.value = objectItem.item;
       categoryRef.current.value = objectItem.category;
