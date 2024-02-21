@@ -4,7 +4,7 @@ import ListTask from './ListTask';
 import ConfirmationModal from './ConfirmationModal';
 import axios from 'axios';
 import { faL } from '@fortawesome/free-solid-svg-icons';
-const api='https://api.prabinkc.com:8080/api/';
+const api='https://api.prabinkc.com:8080/api/items';
 
 export default function ToDoManager() {
   const [completedTask, setCompletedTask] = useState([]);
@@ -129,34 +129,9 @@ export default function ToDoManager() {
     }
   };
 
-  // const handleInputChange = async(e) => {
-  //   const inputValue = e.target.value.toLowerCase();
-  //   try {
-      
-  //       const response = await axios.get(`http://localhost:3000/api/items`);
-  //       const responseData = response.data;
-  //       const items = response.data.items;
-  //       const matchedItems = items.filter(item => item.item.startsWith(inputValue));
-  //       if (inputValue !== "" && matchedItems.length > 0){
-  //         setOurSuggestions(matchedItems);
-  //         setDbHasData(true);
-  //         setHistoryHasData(false);
-  //       } 
-  //     else{
-  //       const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
-  //       console.log("filtered suggestion is", filteredSuggestions)
-  //       setSuggestions(filteredSuggestions);
-  //       setDbHasData(false);
-  //       setHistoryHasData(true);
-  //     }
-  //   } catch(error){
-  //     console.log("error", error.message);
-  //   }
-    
-  // };
   const handleInputChange = async(e) => {
     const inputValue = e.target.value.toLowerCase();  
-    const response = await axios.get(`http://localhost:3000/api/items`);
+    const response = await axios.get(api);
     const responseData = response.data;
     const items = response.data.items;
     const matchedItems = items.filter(item => item.item.startsWith(inputValue));
