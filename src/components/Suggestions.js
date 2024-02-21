@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
-export default function Suggestions({ suggestions, handleSuggestionClick, removeSuggestion }) {
+export default function Suggestions({ suggestions, Oursuggestions, handleSuggestionClick, removeSuggestion, dbHasData, historyHasData }) {
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const suggestionListRef = useRef(null);
 
@@ -29,12 +29,31 @@ export default function Suggestions({ suggestions, handleSuggestionClick, remove
     }
   }, [selectedSuggestion, handleSuggestionClick]);
 
-  const suggestionSelection = (task) => {
-    setSelectedSuggestion(task);
+  const suggestionSelection = (item) => {
+    setSelectedSuggestion(item);
   };
 
   return (
-    <ul ref={suggestionListRef} className="list-group">
+    <>
+    {/* when mongo returns with data show this suggestions */}
+    {dbHasData && (
+      <ul ref={suggestionListRef} className="list-group">
+      {Oursuggestions.map((item) => (
+        <li
+          key={item._id}
+          onClick={() => suggestionSelection(item)}
+          className={`list-group-item d-flex justify-content-between align-items-center list-group-item-action list-group-item-success ${selectedSuggestion === item ? 'active' : 'list-group-item-secondary'}`}
+        >
+          {item.item} 
+          <span className="badge bg-info rectangle-pill">{item.category}</span>
+        </li>
+      ))}
+      </ul>
+    )}
+  {/* when history has data to show */}
+      
+  {historyHasData && (
+      <ul ref={suggestionListRef} className="list-group">
       {suggestions.map((task) => (
         <li
           key={task.task_id}
@@ -42,9 +61,13 @@ export default function Suggestions({ suggestions, handleSuggestionClick, remove
           className={`list-group-item d-flex justify-content-between align-items-center list-group-item-action list-group-item-success ${selectedSuggestion === task ? 'active' : 'list-group-item-secondary'}`}
         >
           {task.task_name} 
+
           <span className="badge bg-info rectangle-pill">{task.category}</span>
         </li>
       ))}
-    </ul>
+      </ul>
+    )}
+    
+    </>
   );
 }

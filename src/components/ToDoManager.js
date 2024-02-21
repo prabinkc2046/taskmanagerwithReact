@@ -3,16 +3,20 @@ import Form from './Form';
 import ListTask from './ListTask';
 import ConfirmationModal from './ConfirmationModal';
 import axios from 'axios';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 const api='https://api.prabinkc.com:8080/api/';
 
 export default function ToDoManager() {
   const [completedTask, setCompletedTask] = useState([]);
   const [incompletedTask, setInCompletedTask] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [Oursuggestions, setOurSuggestions] = useState([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const [history, setHistory] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [dbHasData, setDbHasData] = useState(false);
+  const [historyHasData, setHistoryHasData] = useState(!dbHasData)
   const taskNameRef = useRef();
   const categoryRef = useRef();
   const [activeAccordion, setActiveAccordion] = useState(() => {
@@ -92,8 +96,8 @@ export default function ToDoManager() {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    const task_name = taskNameRef.current.value;
-    let category = categoryRef.current.value;
+    let task_name = taskNameRef.current.value;
+    let  category = categoryRef.current.value;
     category = category.trim() === "" ? "Uncategorised items" : category;
     const newTask = {
       task_id: new Date().getTime(),
@@ -125,32 +129,66 @@ export default function ToDoManager() {
     }
   };
 
+  // const handleInputChange = async(e) => {
+  //   const inputValue = e.target.value.toLowerCase();
+  //   try {
+      
+  //       const response = await axios.get(`http://localhost:3000/api/items`);
+  //       const responseData = response.data;
+  //       const items = response.data.items;
+  //       const matchedItems = items.filter(item => item.item.startsWith(inputValue));
+  //       if (inputValue !== "" && matchedItems.length > 0){
+  //         setOurSuggestions(matchedItems);
+  //         setDbHasData(true);
+  //         setHistoryHasData(false);
+  //       } 
+  //     else{
+  //       const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
+  //       console.log("filtered suggestion is", filteredSuggestions)
+  //       setSuggestions(filteredSuggestions);
+  //       setDbHasData(false);
+  //       setHistoryHasData(true);
+  //     }
+  //   } catch(error){
+  //     console.log("error", error.message);
+  //   }
+    
+  // };
   const handleInputChange = async(e) => {
-    const inputValue = e.target.value.toLowerCase();
-    try {
-      const response = await axios.get(`${api}${inputValue}`);
-      const responseData = response.data;
-      if (responseData && responseData.category){
-        const category = responseData.category.category;
-        // set the category automatically
-        // when category has value, set the category otherwise do not set
-        categoryRef.current.value = category;
-        console.log("category return ", category);
-      } else{
-        const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
-        console.log("Filtered suggestion ", filteredSuggestions);
-        setSuggestions(filteredSuggestions);
+    const inputValue = e.target.value.toLowerCase();  
+    const response = await axios.get(`http://localhost:3000/api/items`);
+    const responseData = response.data;
+    const items = response.data.items;
+    const matchedItems = items.filter(item => item.item.startsWith(inputValue));
+    const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
+
+    if (inputValue !== "" && filteredSuggestions.length > 0){
+      setSuggestions(filteredSuggestions);
+      setDbHasData(false);
+      setHistoryHasData(true);
+    } else if (inputValue !== "" && matchedItems.length > 0){
+        setOurSuggestions(matchedItems);
+        setDbHasData(true);
+        setHistoryHasData(false);
+    } else {
+      console.log("something went wrong")
       }
-    } catch(error){
-      console.log("error", error.message);
+  }
+
+  const handleSuggestionClick = (objectItem) => {
+    console.log("Selected item is", objectItem);
+    if (objectItem.item && objectItem.item !== ""){
+      taskNameRef.current.value = objectItem.item;
+      categoryRef.current.value = objectItem.category;
+      setOurSuggestions([]);
+      
+    } else{
+      taskNameRef.current.value = objectItem.task_name;
+      categoryRef.current.value = objectItem.category;
+      setSuggestions([]);
+      
     }
     
-  };
-
-  const handleSuggestionClick = (task) => {
-    taskNameRef.current.value = task.task_name;
-    categoryRef.current.value = task.category;
-    setSuggestions([]);
   };
 
   const handleModalConfirmation = (confirmed) => {
@@ -249,6 +287,9 @@ export default function ToDoManager() {
         suggestions={suggestions}
         selectedSuggestion={selectedSuggestion}
         removeSuggestion={removeSuggestion}
+        dbHasData={dbHasData}
+        historyHasData={historyHasData}
+        Oursuggestions={Oursuggestions}
       />
 
       <ConfirmationModal showModal={showModal} handleModalConfirmation={handleModalConfirmation} />

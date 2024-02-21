@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Suggestions from './Suggestions';
 import '../styles/Form.css';
 
-export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handleSuggestionClick, handleInputChange, suggestions, removeSuggestion }) {
+export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handleSuggestionClick, handleInputChange, suggestions, removeSuggestion, dbHasData, historyHasData, Oursuggestions }) {
   return (
     <div className="container mt-4">
       <form onSubmit={handleSubmitForm} className="row g-3 ">
@@ -20,7 +20,7 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
             />
             <select  ref={categoryRef} className="form-select form-select-sm custom-select" aria-label="Major Grocery Category" defaultValue="">
             <option value="" disabled>Select aisle</option>
-            <option value="Fresh Produce">🥦 Fresh Produce</option>
+            <option value="fresh produce">🥦 Fresh Produce</option>
             <option value="Dairy Products">🥛 Dairy Products</option>
             <option value="Meat And Poultry">🍗 Meat and Poultry</option>
             <option value="Bakery Items">🍞 Bakery Items</option>
@@ -38,8 +38,11 @@ export default function Form({ handleSubmitForm, taskNameRef, categoryRef, handl
           </div>
           <Suggestions 
           suggestions={suggestions}
+          dbHasData={dbHasData}
           handleSuggestionClick={handleSuggestionClick}
           removeSuggestion={removeSuggestion}
+          historyHasData={historyHasData}
+          Oursuggestions={Oursuggestions}
           />
         </div>
       </form>
