@@ -4,7 +4,7 @@ import ListTask from './ListTask';
 import ConfirmationModal from './ConfirmationModal';
 import axios from 'axios';
 import { faL } from '@fortawesome/free-solid-svg-icons';
-const api='https://api.prabinkc.com:8080/api/items';
+const api = process.env.REACT_APP_API;
 
 export default function ToDoManager() {
   const [completedTask, setCompletedTask] = useState([]);
