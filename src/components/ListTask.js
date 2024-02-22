@@ -19,7 +19,7 @@ export default function ListTask({
   daysSinceLastEmptyTask,
   purchasedDates,
   handlePurchasedTask,
-  handleCompletedTaskDelete
+  handleCompletedTaskDelete,
 }) {
   return (
     <>
@@ -170,6 +170,7 @@ export default function ListTask({
           </div>
         )}
       </div>
+      
     </>
   );
 }

@@ -1,15 +1,15 @@
 // Importing necessary modules and components
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import Form from './Form';
 import ListTask from './ListTask';
 import ConfirmationModal from './ConfirmationModal';
 import axios from 'axios';
-import { faL } from '@fortawesome/free-solid-svg-icons';
 const api = process.env.REACT_APP_API; // API endpoint
 
 // Main component for managing tasks
 export default function ToDoManager() {
   // State variables initialization
+  const [data, setData] = useState([]);
   const [completedTask, setCompletedTask] = useState([]); // List of completed tasks
   const [incompletedTask, setInCompletedTask] = useState([]); // List of incomplete tasks
   const [suggestions, setSuggestions] = useState([]); // Suggestions for task names
@@ -144,12 +144,25 @@ export default function ToDoManager() {
     }
   };
 
+  //pull the fresh data on change of date
+  const currentDate = new Date().getDate();
+  useEffect(()=>{
+    const fetchFreshData = async()=>{
+      try{
+        console.log("pulling data");
+        const response = await axios.get(api);
+        const items = response.data.items;
+        setData(items);
+      }catch(e){
+        console.log("Error", e.message);
+      }
+    };
+    fetchFreshData();
+  },[currentDate]);
   // Function to handle input change for suggestions
   const handleInputChange = async(e) => {
     const inputValue = e.target.value.toLowerCase();
-    const response = await axios.get(api);
-    const items = response.data.items;
-    const matchedItems = items.filter(item => item.item.startsWith(inputValue));
+    const matchedItems = data.filter(item => item.item.startsWith(inputValue));
     const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
 
     if (inputValue !== "" && filteredSuggestions.length > 0){
