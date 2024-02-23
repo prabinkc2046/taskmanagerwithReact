@@ -1,5 +1,5 @@
 // Importing necessary modules and components
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef, useCallback} from 'react';
 import Form from './Form';
 import ListTask from './ListTask';
 import ConfirmationModal from './ConfirmationModal';
@@ -60,18 +60,26 @@ export default function ToDoManager() {
     updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask }); // Update local storage
   };
 
-  // Function to handle marking task as incomplete
+
   const handleCompletedTask = (id) => {
-    const purchasedTask = completedTask.find(task => task.task_id === id);
-    if (purchasedTask) {
-      purchasedTask.completed = false;
-      const updatedCompletedTask = completedTask.filter(task => task.task_id !== id);
-      const updatedIncompletedTask = [...incompletedTask, purchasedTask];
-      setInCompletedTask(updatedIncompletedTask);
-      setCompletedTask(updatedCompletedTask);
-      updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
-    }
-  };
+    // getting the index of the task being clicked
+   const taskIndex = completedTask.findIndex(task => task.task_id === id); 
+  //  if the index of task exits
+   if (taskIndex !== -1){
+    // access the task from the copy of completed task and set completed to false
+    const updatedTask = {...completedTask[taskIndex], completed: false};
+    // getting the copy of completed task for splice operation
+    const updatedCompletedTask = [...completedTask];
+    // remove the task by using its task index
+    updatedCompletedTask.splice(taskIndex, 1);
+    //add the updated task to the copy of incompleted task
+    const updatedIncompletedTask = [...incompletedTask, updatedTask];
+    //set the state
+    setInCompletedTask(updatedIncompletedTask);
+    setCompletedTask(updatedCompletedTask);
+    updateLocalStorage({incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask})
+   }
+  }
 
   // Function to format date
   const formatDate = (date) => {
@@ -81,31 +89,39 @@ export default function ToDoManager() {
 
   // Function to handle marking task as complete
   const handleTaskCompleteStatus = (id) => {
-    const taskToUpdate = incompletedTask.find(task => task.task_id === id);
-    if (taskToUpdate) {
-      taskToUpdate.completed = true;
-      const currentDate = new Date();
-      const formattedDate = formatDate(currentDate);
-      taskToUpdate.purchasedDate = formattedDate;
-      const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
-      const updatedCompletedTask = [...completedTask, taskToUpdate];
-
+    //access the index of the clicked item
+    const taskIndex = incompletedTask.findIndex(task => task.task_id === id);
+    //only if index exits
+    if (taskIndex !== -1){
+      //access the item with the index from the copy of the incompleted task and set completed to true
+      const updatedTask = {...incompletedTask[taskIndex], completed: true}
+      // get the copy of current incompleted task which also contains the updated task
+      const updatedIncompletedTask = [...incompletedTask];
+      //Remove the updated task from incomplete task array by using its index
+      updatedIncompletedTask.splice(taskIndex,1);
+      //set new property purchasedDate to the updated task object
+      updatedTask.purchasedDate = formatDate(new Date());
+      // get the copy of current completed task and add to it new updated completed task with purchased date property
+      const  updatedCompletedTask = [...completedTask, updatedTask];
+      //set the new updated value to these states
       setInCompletedTask(updatedIncompletedTask);
       setCompletedTask(updatedCompletedTask);
-      updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
+      updateLocalStorage({incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask})
     }
-  };
 
+  }
+  
   // Function to handle task deletion
   const handleDeleteTask = (id) => {
-    const updatedIncompletedTask = incompletedTask.filter(task => task.task_id !== id);
-    const updatedCompletedTask = completedTask.filter(task => task.task_id !== id);
-
-    setInCompletedTask(updatedIncompletedTask);
-    setCompletedTask(updatedCompletedTask);
-
-    updateLocalStorage({ incompletedTask: updatedIncompletedTask, completedTask: updatedCompletedTask });
-  };
+    const taskIndex = completedTask.findIndex(task => task.task_id === id);
+    if (taskIndex !== -1){
+      console.log("task index is", taskIndex);
+      const updatedCompletedTask = [...completedTask];
+      updatedCompletedTask.splice(taskIndex,1);
+      setCompletedTask(updatedCompletedTask);
+      updateLocalStorage({ incompletedTask: incompletedTask, completedTask: updatedCompletedTask });
+    }
+  }
 
   // Function to handle form submission
   const handleSubmitForm = (e) => {
@@ -159,44 +175,142 @@ export default function ToDoManager() {
     };
     fetchFreshData();
   },[currentDate]);
-  // Function to handle input change for suggestions
-  const handleInputChange = async(e) => {
-    const inputValue = e.target.value.toLowerCase();
-    const matchedItems = data.filter(item => item.item.startsWith(inputValue));
-    const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
 
-    if (inputValue !== "" && filteredSuggestions.length > 0){
-      setSuggestions(filteredSuggestions);
-      setDbHasData(false);
-      setHistoryHasData(true);
-    } else if (inputValue !== "" && matchedItems.length > 0){
+
+
+
+  // //Define deboune function
+  // const debounce = (func, delay) => {
+  //   let timer;
+  //   return function(){
+  //     const context = this;
+  //     const args = arguments;
+  //     clearTimeout(timer);
+  //     timer = setTimeout(()=> func.apply(context, args), delay)
+  //   }
+  // }
+
+
+
+  // Function to handle input change for suggestions
+  // const handleInputChange = async(e) => {
+  //   const inputValue = e.target.value.toLowerCase();
+  //   if (inputValue === ""){
+  //     setSuggestions([]);
+  //     setOurSuggestions([]);
+  //     categoryRef.current.value = "";
+  //     return;
+  //   }
+  //   const matchedItems = data.filter(item => item.item.startsWith(inputValue));
+  //   const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
+
+  //   if (filteredSuggestions.length > 0){
+  //     setSuggestions(filteredSuggestions);
+  //     setDbHasData(false);
+  //     setHistoryHasData(true);
+  //   } else if (matchedItems.length > 0) {
+  //     setOurSuggestions(matchedItems);
+  //     setDbHasData(true);
+  //     setHistoryHasData(false);
+  //   } else {
+  //     console.log("something went wrong")
+  //   }
+  // }
+
+  // debounce(async(e) => {
+  //   const inputValue = e.target.value.toLowerCase();
+  //   console.log("Typed item", inputValue);
+  //   if (inputValue === ""){
+  //     setSuggestions([]);
+  //     setOurSuggestions([]);
+  //     categoryRef.current.value = "";
+  //     return;
+  //   }
+  //   const matchedItems = data.filter(item => item.item.startsWith(inputValue));
+  //   const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
+
+  //   if (filteredSuggestions.length > 0){
+  //     setSuggestions(filteredSuggestions);
+  //     setDbHasData(false);
+  //     setHistoryHasData(true);
+  //   } else if (matchedItems.length > 0) {
+  //     setOurSuggestions(matchedItems);
+  //     setDbHasData(true);
+  //     setHistoryHasData(false);
+  //   } else {
+  //     console.log("something went wrong")
+  //   }
+  // },3000);
+
+  const debounce = (mainFunction, delay) => {
+    // Declare a variable called 'timer' to store the timer ID
+    let timer;
+  
+    // Return an anonymous function that takes in any number of arguments
+    return function (...args) {
+      // Clear the previous timer to prevent the execution of 'mainFunction'
+      clearTimeout(timer);
+  
+      // Set a new timer that will execute 'mainFunction' after the specified delay
+      timer = setTimeout(() => {
+        // mainFunction.apply(this, args)
+        mainFunction(...args);
+      }, delay);
+    };
+  };
+  
+  
+  
+  const handleInputChange = async (e) => {
+    const inputValue = e.target.value.toLowerCase().trim();
+    // Reset states and reference when input is empty
+    if (!inputValue) {
+      setSuggestions([]);
+      setOurSuggestions([]);
+      categoryRef.current.value = "";
+      return;
+    }
+  
+    // Optimizing search by consolidating it into a single operation
+    const updateSuggestions = () => {
+      const matchedItems = data.filter(item => item.item.toLowerCase().startsWith(inputValue));
+      const filteredSuggestions = history.filter(task => task.task_name.toLowerCase().startsWith(inputValue));
+  
+      // Update states based on search results
+      if (filteredSuggestions.length > 0) {
+        setSuggestions(filteredSuggestions);
+        setDbHasData(false);
+        setHistoryHasData(true);
+      } else if (matchedItems.length > 0) {
         setOurSuggestions(matchedItems);
         setDbHasData(true);
         setHistoryHasData(false);
-    } else if(inputValue === "" || filteredSuggestions.length === 0){
+      } else {
+        // Provide a clear indication of no matches or an error state
         setSuggestions([]);
         setOurSuggestions([]);
         categoryRef.current.value = "";
-    }
-    else {
-      console.log("something went wrong")
+        console.error("No matching suggestions found.");
       }
-  }
+    };
+    updateSuggestions();   
+  };
 
+  // Wrap handleInputChange with debounce
+  const debouncedInputChange = debounce(handleInputChange, 100); // 300ms delay
+  
   // Function to handle suggestion click
   const handleSuggestionClick = (objectItem) => {
+    const {item, task_name, category} = objectItem;
     if (objectItem.item && objectItem.item !== ""){
-      taskNameRef.current.value = objectItem.item;
-      categoryRef.current.value = objectItem.category;
-      setOurSuggestions([]);
-      
+      taskNameRef.current.value = item;
+      categoryRef.current.value = category;
+      setOurSuggestions([]);   
     } else{
-      taskNameRef.current.value = objectItem.task_name;
-      categoryRef.current.value = objectItem.category;
-      setSuggestions([]);
-      
-    }
-    
+      taskNameRef.current.value = task_name;
+      categoryRef.current.value = category;
+      setSuggestions([]);    
+    }  
   };
 
   // Function to handle confirmation modal
@@ -305,7 +419,7 @@ export default function ToDoManager() {
         taskNameRef={taskNameRef}
         categoryRef={categoryRef}
         handleSuggestionClick={handleSuggestionClick}
-        handleInputChange={handleInputChange}
+        handleInputChange={debouncedInputChange}
         suggestions={suggestions}
         selectedSuggestion={selectedSuggestion}
         removeSuggestion={removeSuggestion}
