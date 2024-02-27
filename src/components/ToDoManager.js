@@ -1,5 +1,6 @@
 // Importing necessary modules and components
 import React, { useState, useEffect, useRef, useCallback} from 'react';
+import debounce from './debounce';
 import Form from './Form';
 import ListTask from './ListTask';
 import ConfirmationModal from './ConfirmationModal';
@@ -10,16 +11,14 @@ const api = process.env.REACT_APP_API; // API endpoint
 export default function ToDoManager() {
   // State variables initialization
   const [data, setData] = useState([]);
+  const [inputValue, setInputValue] = useState(''); // keep track of change of input value
   const [completedTask, setCompletedTask] = useState([]); // List of completed tasks
   const [incompletedTask, setInCompletedTask] = useState([]); // List of incomplete tasks
   const [suggestions, setSuggestions] = useState([]); // Suggestions for task names
-  const [Oursuggestions, setOurSuggestions] = useState([]); // Suggestions fetched from the server
   const [selectedSuggestion, setSelectedSuggestion] = useState(null); // Currently selected suggestion
   const [history, setHistory] = useState([]); // Task history
   const [showModal, setShowModal] = useState(false); // Flag to control visibility of confirmation modal
   const [selectedTask, setSelectedTask] = useState(null); // Task selected for confirmation
-  const [dbHasData, setDbHasData] = useState(false); // Flag indicating whether server has data for suggestions
-  const [historyHasData, setHistoryHasData] = useState(!dbHasData); // Flag indicating whether local history has data
   const taskNameRef = useRef(); // Reference to task name input field
   const categoryRef = useRef(); // Reference to category input field
   const [activeAccordion, setActiveAccordion] = useState(() => {
@@ -27,6 +26,7 @@ export default function ToDoManager() {
     const storedActiveAccordion = localStorage.getItem('activeAccordion');
     return storedActiveAccordion ? JSON.parse(storedActiveAccordion) : null;
   });
+  const totalItems = history.concat(data); //array of items combined with history and from database
 
   // Effect to save active accordion state to local storage
   useEffect(() => {
@@ -145,14 +145,14 @@ export default function ToDoManager() {
     }
 
     saveToHistory(newTask);
-    setSuggestions([]);
+    // setSuggestions([]);
   };
 
   // Function to save task to history
   const saveToHistory = (task) => {
     const existingHistory = JSON.parse(localStorage.getItem('taskHistory')) || [];
     const isTaskAlreadyExists = existingHistory.some(existingTask => existingTask.task_name === task.task_name);
-
+    console.log(isTaskAlreadyExists);
     if (!isTaskAlreadyExists) {
       const updatedHistory = [task, ...existingHistory];
       setHistory(updatedHistory);
@@ -176,136 +176,43 @@ export default function ToDoManager() {
     fetchFreshData();
   },[currentDate]);
 
-
-
-
-  // //Define deboune function
-  // const debounce = (func, delay) => {
-  //   let timer;
-  //   return function(){
-  //     const context = this;
-  //     const args = arguments;
-  //     clearTimeout(timer);
-  //     timer = setTimeout(()=> func.apply(context, args), delay)
-  //   }
-  // }
-
-
-
-  // Function to handle input change for suggestions
-  // const handleInputChange = async(e) => {
-  //   const inputValue = e.target.value.toLowerCase();
-  //   if (inputValue === ""){
-  //     setSuggestions([]);
-  //     setOurSuggestions([]);
-  //     categoryRef.current.value = "";
-  //     return;
-  //   }
-  //   const matchedItems = data.filter(item => item.item.startsWith(inputValue));
-  //   const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
-
-  //   if (filteredSuggestions.length > 0){
-  //     setSuggestions(filteredSuggestions);
-  //     setDbHasData(false);
-  //     setHistoryHasData(true);
-  //   } else if (matchedItems.length > 0) {
-  //     setOurSuggestions(matchedItems);
-  //     setDbHasData(true);
-  //     setHistoryHasData(false);
-  //   } else {
-  //     console.log("something went wrong")
-  //   }
-  // }
-
-  // debounce(async(e) => {
-  //   const inputValue = e.target.value.toLowerCase();
-  //   console.log("Typed item", inputValue);
-  //   if (inputValue === ""){
-  //     setSuggestions([]);
-  //     setOurSuggestions([]);
-  //     categoryRef.current.value = "";
-  //     return;
-  //   }
-  //   const matchedItems = data.filter(item => item.item.startsWith(inputValue));
-  //   const filteredSuggestions = history.filter((task) => task.task_name.toLowerCase().startsWith(inputValue));
-
-  //   if (filteredSuggestions.length > 0){
-  //     setSuggestions(filteredSuggestions);
-  //     setDbHasData(false);
-  //     setHistoryHasData(true);
-  //   } else if (matchedItems.length > 0) {
-  //     setOurSuggestions(matchedItems);
-  //     setDbHasData(true);
-  //     setHistoryHasData(false);
-  //   } else {
-  //     console.log("something went wrong")
-  //   }
-  // },3000);
-
-  const debounce = (mainFunction, delay) => {
-    // Declare a variable called 'timer' to store the timer ID
-    let timer;
-  
-    // Return an anonymous function that takes in any number of arguments
-    return function (...args) {
-      // Clear the previous timer to prevent the execution of 'mainFunction'
-      clearTimeout(timer);
-  
-      // Set a new timer that will execute 'mainFunction' after the specified delay
-      timer = setTimeout(() => {
-        // mainFunction.apply(this, args)
-        mainFunction(...args);
-      }, delay);
-    };
-  };
-  
-  
-  
-  const handleInputChange = async (e) => {
-    const inputValue = e.target.value.toLowerCase().trim();
-    // Reset states and reference when input is empty
-    if (!inputValue) {
-      setSuggestions([]);
-      setOurSuggestions([]);
-      categoryRef.current.value = "";
-      return;
-    }
-  
-    // Optimizing search by consolidating it into a single operation
-    const updateSuggestions = () => {
-      const matchedItems = data.filter(item => item.item.toLowerCase().startsWith(inputValue));
-      const filteredSuggestions = history.filter(task => task.task_name.toLowerCase().startsWith(inputValue));
-  
-      // Update states based on search results
-      if (filteredSuggestions.length > 0) {
-        setSuggestions(filteredSuggestions);
-        setDbHasData(false);
-        setHistoryHasData(true);
-      } else if (matchedItems.length > 0) {
-        setOurSuggestions(matchedItems);
-        setDbHasData(true);
-        setHistoryHasData(false);
-      } else {
-        // Provide a clear indication of no matches or an error state
+  useEffect(()=>{
+    // state update or function that update states with be called with delay
+    const timerOut = setTimeout(()=>{
+      if (!inputValue){
         setSuggestions([]);
-        setOurSuggestions([]);
         categoryRef.current.value = "";
-        console.error("No matching suggestions found.");
+        return;
       }
-    };
-    updateSuggestions();   
-  };
+      const searchedItems = totalItems.filter(obj =>{
+        return (obj.task_id && obj.task_name.startsWith(inputValue)) || (obj._id && obj.item.startsWith(inputValue))
+      });
+      if (searchedItems.length > 0){
+        setSuggestions(searchedItems);
+      } else {
+        setSuggestions([]);
+        categoryRef.current.value = "";
+        console.log("Searched Item not found");
+      }
+    },500);
 
-  // Wrap handleInputChange with debounce
-  const debouncedInputChange = debounce(handleInputChange, 100); // 300ms delay
-  
+    return ()=>{
+      clearTimeout(timerOut);
+    }
+  },[inputValue]); // whenever input value is changed, we run use effect
+
+  const handleInputChange = async (e) => {
+    // setting the input value
+    setInputValue(e.target.value.toLowerCase().trim());
+  }
+    
   // Function to handle suggestion click
   const handleSuggestionClick = (objectItem) => {
     const {item, task_name, category} = objectItem;
     if (objectItem.item && objectItem.item !== ""){
       taskNameRef.current.value = item;
       categoryRef.current.value = category;
-      setOurSuggestions([]);   
+   
     } else{
       taskNameRef.current.value = task_name;
       categoryRef.current.value = category;
@@ -349,7 +256,6 @@ export default function ToDoManager() {
   // Function to remove suggestions
   const removeSuggestion = () => {
     setSuggestions([]);
-    setOurSuggestions([]);
   };
 
   // Function to toggle accordion
@@ -358,12 +264,15 @@ export default function ToDoManager() {
     removeSuggestion();
   };
 
+  //debounce the toggle Accordion function so that it does not change on quick touch
+  const debouncedToggleAccordion = useCallback(debounce(toggleAccordion,500),[]);
+
   // State variables for sorting tasks and tracking empty task time
   const [sortedCategory, setSortedCategory] = useState([]);
   const [lastEmptyTaskTime, setLastEmptyTaskTime] = useState(null);
   const [daysSinceLastEmptyTask, setDaysSinceLastEmptyTask] = useState(null);
   const categories = Array.from(new Set(sortedCategory.map(task => task.category)));
-  const purchasedDates = Array.from(new Set(completedTask.map(task => task.purchasedDate)));
+  const purchasedDates = Array.from(new Set(completedTask.map(task => task.purchasedDate))).reverse();
 
   // Effect to process incomplete tasks and update empty task time
   useEffect(() => {
@@ -419,13 +328,10 @@ export default function ToDoManager() {
         taskNameRef={taskNameRef}
         categoryRef={categoryRef}
         handleSuggestionClick={handleSuggestionClick}
-        handleInputChange={debouncedInputChange}
+        handleInputChange={handleInputChange}
         suggestions={suggestions}
         selectedSuggestion={selectedSuggestion}
         removeSuggestion={removeSuggestion}
-        dbHasData={dbHasData}
-        historyHasData={historyHasData}
-        Oursuggestions={Oursuggestions}
       />
 
       <ConfirmationModal showModal={showModal} handleModalConfirmation={handleModalConfirmation} />
@@ -441,7 +347,7 @@ export default function ToDoManager() {
         handleDeleteTask={handleDeleteTask}
         removeSuggestion={removeSuggestion}
         activeAccordion={activeAccordion}
-        toggleAccordion={toggleAccordion}
+        toggleAccordion={debouncedToggleAccordion}
         categories={categories}
         handleIncompleteTaskClick={handleIncompleteTaskClick}
         daysSinceLastEmptyTask={daysSinceLastEmptyTask}

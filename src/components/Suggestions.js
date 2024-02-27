@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
-export default function Suggestions({ suggestions, Oursuggestions, handleSuggestionClick, removeSuggestion, dbHasData, historyHasData }) {
+export default function Suggestions({ suggestions, handleSuggestionClick, removeSuggestion }) {
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const suggestionListRef = useRef(null);
 
@@ -35,39 +35,19 @@ export default function Suggestions({ suggestions, Oursuggestions, handleSuggest
 
   return (
     <>
-    {/* when mongo returns with data show this suggestions */}
-    {dbHasData && (
-      <ul ref={suggestionListRef} className="list-group">
-      {Oursuggestions.map((item) => (
+    <ul ref={suggestionListRef} className="list-group">
+      {suggestions.map((obj) => (
         <li
-          key={item._id}
-          onClick={() => suggestionSelection(item)}
-          className={`list-group-item d-flex justify-content-between align-items-center list-group-item-action list-group-item-success ${selectedSuggestion === item ? 'active' : 'list-group-item-secondary'}`}
+          key={obj.task_id || obj._id}
+          onClick={() => suggestionSelection(obj)}
+          className={`list-group-item d-flex justify-content-between align-items-center list-group-item-action list-group-item-success ${selectedSuggestion === obj ? 'active' : 'list-group-item-secondary'}`}
         >
-          {item.item} 
-          <span className="badge bg-info rectangle-pill">{item.category}</span>
-        </li>
-      ))}
-      </ul>
-    )}
-  {/* when history has data to show */}
-      
-  {historyHasData && (
-      <ul ref={suggestionListRef} className="list-group">
-      {suggestions.map((task) => (
-        <li
-          key={task.task_id}
-          onClick={() => suggestionSelection(task)}
-          className={`list-group-item d-flex justify-content-between align-items-center list-group-item-action list-group-item-success ${selectedSuggestion === task ? 'active' : 'list-group-item-secondary'}`}
-        >
-          {task.task_name} 
+          {obj.task_name || obj.item} 
 
-          <span className="badge bg-info rectangle-pill">{task.category}</span>
+          <span className="badge bg-info rectangle-pill">{obj.category}</span>
         </li>
       ))}
       </ul>
-    )}
-    
     </>
   );
 }
