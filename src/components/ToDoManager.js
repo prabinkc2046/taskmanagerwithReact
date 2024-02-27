@@ -2,7 +2,8 @@
 import React, { useState, useEffect, useRef, useCallback} from 'react';
 import debounce from './debounce';
 import Form from './Form';
-import ListTask from './ListTask';
+import InCompletedTask from './InCompletedTask';
+import CompletedTask from './CompletedTask';
 import ConfirmationModal from './ConfirmationModal';
 import axios from 'axios';
 const api = process.env.REACT_APP_API; // API endpoint
@@ -274,11 +275,6 @@ export default function ToDoManager() {
   const categories = Array.from(new Set(sortedCategory.map(task => task.category)));
   const purchasedDates = Array.from(new Set(completedTask.map(task => task.purchasedDate))).reverse();
 
-  // Effect to process incomplete tasks and update empty task time
-  useEffect(() => {
-    processTasks(incompletedTask);
-  }, [incompletedTask]);
-
   // Function to process incomplete tasks
   function processTasks(incompletedTasks) {
     const categoryTasks = {};
@@ -294,6 +290,11 @@ export default function ToDoManager() {
       setLastEmptyTaskTime(new Date());
     }
   }
+
+  // Effect to process incomplete tasks and update empty task time
+  useEffect(() => {
+    processTasks(incompletedTask);
+  }, [incompletedTask]);
 
   // Effect to calculate days since last empty task
   useEffect(() => {
@@ -338,22 +339,23 @@ export default function ToDoManager() {
 
       <p></p>
 
-      <ListTask
-        fetchTask={() => { }}
-        handleTaskCompleteStatus={handleTaskCompleteStatus}
+      <InCompletedTask
+      completedTask={completedTask}
+      incompletedTask={incompletedTask}
+      categories={categories}
+      activeAccordion={activeAccordion}
+      toggleAccordion={debouncedToggleAccordion}
+      handleIncompleteTaskClick={handleIncompleteTaskClick}
+      daysSinceLastEmptyTask={daysSinceLastEmptyTask}
+      />
+      
+      <CompletedTask
         completedTask={completedTask}
-        incompletedTask={incompletedTask}
-        handleCompletedTask={handleCompletedTask}
-        handleDeleteTask={handleDeleteTask}
-        removeSuggestion={removeSuggestion}
-        activeAccordion={activeAccordion}
-        toggleAccordion={debouncedToggleAccordion}
-        categories={categories}
-        handleIncompleteTaskClick={handleIncompleteTaskClick}
-        daysSinceLastEmptyTask={daysSinceLastEmptyTask}
         purchasedDates={purchasedDates}
         handlePurchasedTask={handlePurchasedTask}
         handleCompletedTaskDelete={handleCompletedTaskDelete}
+        activeAccordion={activeAccordion}
+        toggleAccordion={debouncedToggleAccordion}
       />
     </>
   );
