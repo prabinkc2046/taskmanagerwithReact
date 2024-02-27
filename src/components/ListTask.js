@@ -136,22 +136,23 @@ export default function ListTask({
                         aria-labelledby={`heading-${index}`}
                         data-bs-parent="#accordionFlushExample"
                       >
-                        <div className="accordion-body">
+                        <div className="accordion-body" style={{paddingLeft: '1vw', paddingRight: '1vw', paddingTop: '1vh', paddingBottom: '1vh'}}>
                           <div className="list-group">
                             {completedTask
                               .filter(task => task.purchasedDate === purchasedDate)
                               .map(task => (
-                                <li key={task.task_id} className="list-group-item">
+                                <li key={task.task_id} className="list-group-item" style={{padding: '0'}}>
                                   <div className="d-flex justify-content-between align-items-center">
                                     <button
                                       className="btn btn-light"
-                                      style={{ textDecoration: 'line-through', textDecorationColor: 'blue', fontStyle: 'italic', textDecorationThickness: '2px', color: 'black' }}
+                                      style={{ textDecoration: 'line-through', textDecorationColor: 'black',  textDecorationThickness: '2px', color: 'black', padding:'0px' }}
                                       onClick={() => handlePurchasedTask(task.task_id)}
                                     >
-                                      <span style={{ fontSize: 'medium' }}>{task.task_name}</span>
+                                      <span style={{ fontSize: 'medium', paddingLeft:'1.5vw'}}>{task.task_name}</span>
                                     </button>
                                     <button
                                       className="btn btn-light"
+                                      style={{paddingLeft: '1vw'}}
                                       onClick={() => handleCompletedTaskDelete(task.task_id)}
                                     >
                                       <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
