@@ -213,6 +213,7 @@ export default function ToDoManager() {
     if (objectItem.item && objectItem.item !== ""){
       taskNameRef.current.value = item;
       categoryRef.current.value = category;
+      setSuggestions([]);
    
     } else{
       taskNameRef.current.value = task_name;

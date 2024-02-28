@@ -1,0 +1,18 @@
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: wheat;
+    height: 5vh;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.footerLink {
+    text-decoration: none;
+    color: black;
+    font-size: clamp(4px, 3vw)
+}
